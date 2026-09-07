@@ -8,22 +8,80 @@
     "highlight": "Quiosque privativo com churrasqueira",
     "description": "Casa térrea, 2 quartos, cozinha integrada e quiosque privativo com churrasqueira. As imagens desta galeria são meramente ilustrativas e representam apenas o padrão de acabamento proposto. A casa é entregue sem móveis.",
     "phone": "5551982472740",
-    "status": "ok",
     "slug": "casa-feitoria",
+    "status": "ok",
     "coverUrl": "/fotos/10.jpeg",
     "model3dUrl": "/showroom3d/modelos/casa.glb",
     "model3dTitle": "Explore a casa",
     "model3dDescription": "Gire o modelo, aproxime e veja a fachada e a implantação da casa em outra escala.",
     "photos": [
-      { "file": "03.jpeg", "url": "/fotos/03.jpeg", "label": "Sala de estar" },
-      { "file": "06.jpeg", "url": "/fotos/06.jpeg", "label": "Sala de estar" },
-      { "file": "05.jpeg", "url": "/fotos/05.jpeg", "label": "Sala/cozinha" },
-      { "file": "04.jpeg", "url": "/fotos/04.jpeg", "label": "Cozinha" },
-      { "file": "07.jpeg", "url": "/fotos/07.jpeg", "label": "Quarto 1" },
-      { "file": "01.jpeg", "url": "/fotos/01.jpeg", "label": "Quarto 1" },
-      { "file": "08.jpeg", "url": "/fotos/08.jpeg", "label": "Quarto 2" },
-      { "file": "09.jpeg", "url": "/fotos/09.jpeg", "label": "Quarto 2" },
-      { "file": "02.jpeg", "url": "/fotos/02.jpeg", "label": "Banheiro" }
+      {
+        "file": "03.jpeg",
+        "url": "/fotos/03.jpeg",
+        "label": "Sala de estar"
+      },
+      {
+        "file": "06.jpeg",
+        "url": "/fotos/06.jpeg",
+        "label": "Sala de estar"
+      },
+      {
+        "file": "05.jpeg",
+        "url": "/fotos/05.jpeg",
+        "label": "Sala/cozinha"
+      },
+      {
+        "file": "04.jpeg",
+        "url": "/fotos/04.jpeg",
+        "label": "Cozinha"
+      },
+      {
+        "file": "07.jpeg",
+        "url": "/fotos/07.jpeg",
+        "label": "Quarto 1"
+      },
+      {
+        "file": "01.jpeg",
+        "url": "/fotos/01.jpeg",
+        "label": "Quarto 1"
+      },
+      {
+        "file": "08.jpeg",
+        "url": "/fotos/08.jpeg",
+        "label": "Quarto 2"
+      },
+      {
+        "file": "09.jpeg",
+        "url": "/fotos/09.jpeg",
+        "label": "Quarto 2"
+      },
+      {
+        "file": "02.jpeg",
+        "url": "/fotos/02.jpeg",
+        "label": "Banheiro"
+      }
     ]
+  },
+  {
+    "title": "casa",
+    "addr": "222",
+    "area": "42424242",
+    "rooms": "",
+    "highlight": "",
+    "description": "",
+    "phone": "",
+    "slug": "casa-campestre",
+    "status": "draft",
+    "coverUrl": "/fotos/image002-4.png",
+    "model3dUrl": "",
+    "model3dTitle": "Explore a casa",
+    "model3dDescription": "Gire o modelo, aproxime e veja a fachada e a implantação da casa em outra escala.",
+    "photos": [
+      {
+        "url": "/fotos/image002-4.png",
+        "label": "Image002"
+      }
+    ],
+    "id": "house-1788803088856"
   }
 ]
