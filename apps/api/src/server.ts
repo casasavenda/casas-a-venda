@@ -223,6 +223,11 @@ export function buildServer() {
     }
 
     try {
+      const publishedHouse = await db.update(house.id, { status: 'ok' });
+      if (!publishedHouse) {
+        return reply.code(404).send({ error: 'not_found', message: 'A casa selecionada não foi encontrada.' });
+      }
+      await writeCatalog(await db.list());
       const result = await publishCatalog(`publica ${house.title} (${house.slug})`);
       return reply.send({ published: true, message: result.stdout.trim() || `Casa “${house.title}” publicada com sucesso.` });
     } catch (error) {
