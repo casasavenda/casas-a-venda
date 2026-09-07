@@ -21,6 +21,9 @@ export const houseSchema = z.object({
   slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug inválido'),
   status: houseStatusSchema,
   coverUrl: z.string().trim().default(''),
+  model3dUrl: z.string().trim().default(''),
+  model3dTitle: z.string().trim().default('Explore a casa'),
+  model3dDescription: z.string().trim().default('Gire o modelo, aproxime e veja a fachada e a implantação da casa em outra escala.'),
   photos: z.array(photoSchema).default([]),
 });
 

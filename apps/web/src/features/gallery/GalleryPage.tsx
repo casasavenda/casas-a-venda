@@ -79,7 +79,7 @@ export function GalleryPage() {
         <Card><CardContent className="space-y-4"><p className="text-sm leading-7 text-muted-foreground">{house.description}</p><p className="border-t border-border pt-3 text-sm font-semibold text-primary">Imagens meramente ilustrativas. Consulte as condições e o padrão de acabamento proposto.</p>{whatsapp && <a className="inline-flex min-h-10 items-center gap-2 rounded-md bg-[#25d366] px-4 text-sm font-semibold text-[#102518] hover:brightness-95" href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={17} />Falar no WhatsApp</a>}</CardContent></Card>
       </section>
 
-      <ShowroomEmbed title={house.title} />
+      {house.model3dUrl && <ShowroomEmbed title={house.title} modelUrl={house.model3dUrl} modelTitle={house.model3dTitle} modelDescription={house.model3dDescription} />}
 
       <section id="fotos" className="mx-auto max-w-6xl px-4 py-10 sm:px-5">
         <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3"><div><h2 className="font-serif text-2xl font-semibold">Galeria de fotos</h2><p className="mt-1 text-sm text-muted-foreground">{house.photos.length} fotos</p></div><div className="flex flex-wrap gap-2"><button className="button-base" type="button" onClick={shareGallery}><Share2 size={15} />{shareFeedback || 'Compartilhar galeria'}</button><Link className="button-base" to="/"><ArrowLeft size={15} />Voltar ao perfil</Link></div></div>

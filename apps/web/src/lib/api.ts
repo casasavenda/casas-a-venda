@@ -20,9 +20,11 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
 }
 
 export const api = {
-  listHouses: () => isStaticSite ? Promise.resolve(staticHouses.map(cloneHouse)) : request<House[]>('/houses'),
+  listHouses: () => isStaticSite
+    ? Promise.resolve(staticHouses.filter((house) => house.status === 'ok').map(cloneHouse))
+    : request<House[]>('/houses?status=ok'),
   getHouse: (slug: string) => isStaticSite
-    ? Promise.resolve(staticHouses.find((house) => house.slug === slug)).then((house) => {
+    ? Promise.resolve(staticHouses.find((house) => house.slug === slug && house.status === 'ok')).then((house) => {
       if (!house) throw new Error('Casa não encontrada.');
       return cloneHouse(house);
     })

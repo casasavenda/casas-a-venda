@@ -32,6 +32,9 @@ const casaFeitoria: House = {
   status: 'ok',
   slug: 'casa-feitoria',
   coverUrl: '/fotos/10.jpeg',
+  model3dUrl: '/showroom3d/modelos/casa.glb',
+  model3dTitle: 'Explore a casa',
+  model3dDescription: 'Gire o modelo, aproxime e veja a fachada e a implantação da casa em outra escala.',
   photos: fotosFeitoria,
 };
 

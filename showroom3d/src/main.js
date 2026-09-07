@@ -14,7 +14,9 @@ if (new URLSearchParams(window.location.search).has('embed')) {
 const ehEmbed = document.documentElement.dataset.embed === 'true';
 const ehTelaPequena = window.matchMedia?.('(max-width: 640px)').matches ?? false;
 const usarModeloLeve = ehEmbed || ehTelaPequena;
-const modeloArquivo = usarModeloLeve ? 'modelos/casa-direita-mobile.glb' : 'modelos/casa.glb';
+const modeloPersonalizado = new URLSearchParams(window.location.search).get('model');
+const modeloArquivo = modeloPersonalizado || (usarModeloLeve ? 'modelos/casa-direita-mobile.glb' : 'modelos/casa.glb');
+const modeloUrl = modeloPersonalizado ? new URL(modeloPersonalizado, window.location.href).href : `${import.meta.env.BASE_URL}${modeloArquivo}`;
 
 const canvas = document.querySelector('#house-viewer');
 const canvasFrame = document.querySelector('#canvas-frame');
@@ -189,7 +191,7 @@ animar();
 
 // --- Metadados (dimensões/enquadramento sugeridos) --------------------------
 
-const metaPromise = fetch(`${import.meta.env.BASE_URL}modelos/casa-meta.json`, { cache: 'no-store' })
+const metaPromise = modeloPersonalizado ? Promise.resolve(null) : fetch(`${import.meta.env.BASE_URL}modelos/casa-meta.json`, { cache: 'no-store' })
   .then((resposta) => {
     if (!resposta.ok) throw new Error(`Metadados indisponíveis (${resposta.status}).`);
     return resposta.json();
@@ -473,7 +475,7 @@ function posicionarCameraECena(caixa, direcaoConfigurada = null) {
 const loader = new GLTFLoader();
 
 loader.load(
-  `${import.meta.env.BASE_URL}${modeloArquivo}`,
+  modeloUrl,
   async (gltf) => {
     const modelo = gltf.scene;
     const materiaisAjustados = new Set();
@@ -507,7 +509,7 @@ loader.load(
       }
     });
     palcoApresentacao.add(modelo);
-    manterCasasDaDireita(modelo);
+    if (!modeloPersonalizado) manterCasasDaDireita(modelo);
     alinharModeloNoCentro(modelo);
     modelo.updateMatrixWorld(true);
     const casasApresentacao = descobrirCasas(modelo);

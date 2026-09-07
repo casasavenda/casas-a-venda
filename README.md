@@ -33,6 +33,37 @@ Isso inicia:
 
 Copie `apps/api/.env.example` para `apps/api/.env` e troque `ADMIN_PASSWORD` e `ADMIN_TOKEN` antes de qualquer uso fora do desenvolvimento. A senha padrão existe somente para facilitar o primeiro smoke test local.
 
+## Usar o painel local para atualizar o site
+
+O painel fica disponível somente enquanto a API e a web estão rodando no seu computador, em `http://127.0.0.1:5173/#/admin`. Ele permite cadastrar casas, preencher os dados, anexar fotos, definir a capa e editar o nome de cada cômodo. O nome da legenda é usado no download da foto. O modelo 3D de cada casa também pode receber um arquivo `.glb`, ter o título e a descrição alterados, ser trocado ou removido da galeria.
+
+Para usar pela primeira vez:
+
+```bash
+copy apps/api/.env.example apps/api/.env
+npm run dev
+```
+
+Entre com a senha definida em `apps/api/.env`, crie ou edite a casa e clique em **Salvar casa**. O salvamento atualiza o catálogo local em `apps/web/src/data/houses.json`; uploads de fotos e modelos ficam em `apps/web/public/fotos` e `apps/web/public/showroom3d/modelos`.
+
+Depois de salvar, clique em **Publicar no site** no cabeçalho do painel. Como o painel funciona localmente, a API executa o script fixo de publicação no seu computador: adiciona somente catálogo, fotos e modelos 3D, cria o commit e faz o `push` para a branch atual. O GitHub Actions então reconstrói o GitHub Pages.
+
+Se preferir publicar pelo PowerShell, abra-o na raiz do projeto e rode:
+
+```powershell
+.\scripts\publicar-catalogo.ps1
+```
+
+Para informar uma mensagem de commit própria:
+
+```powershell
+.\scripts\publicar-catalogo.ps1 -Message "adiciona casa nova"
+```
+
+O script prepara apenas o catálogo, as fotos e os modelos 3D. A autenticação do GitHub precisa estar configurada no Git. Alterações de código continuam usando o fluxo normal de commit e push. A publicação automática pelo botão fica desabilitada se a API estiver em produção; ela é destinada ao painel local.
+
+Mantenha o mesmo `slug` quando quiser preservar o link do QR code. A URL pública usada pelo painel é `https://casasavenda.github.io/casas-a-venda/#/casas/<slug>`.
+
 O site publicado no GitHub Pages é estático: ele não publica nem conecta a API administrativa. Em produção, a API deve ser hospedada separadamente e receber `ADMIN_PASSWORD`, `ADMIN_TOKEN` e `WEB_ORIGIN` por variáveis de ambiente, nunca pelo repositório.
 
 ## Verificações

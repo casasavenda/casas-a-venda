@@ -24,6 +24,9 @@ describe('repositório de casas', () => {
       slug: 'casa-teste',
       status: 'draft',
       coverUrl: '',
+      model3dUrl: '',
+      model3dTitle: 'Explore a casa',
+      model3dDescription: '',
       photos: [],
     });
     const updated = await db.update(created.id, { status: 'ok' });
