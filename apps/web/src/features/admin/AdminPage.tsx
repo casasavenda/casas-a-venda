@@ -67,7 +67,11 @@ function AdminDashboard({ token, onLogout }: { token: string; onLogout: () => vo
       setPublishingHouseId(house.id);
       setPublishMessage('');
     },
-    onSuccess: (result, house) => setPublishMessage(`${house.title}: ${result.message}`),
+    onSuccess: (result, house) => {
+      setPublishMessage(`${house.title}: ${result.message}`);
+      client.invalidateQueries({ queryKey: ['admin-houses'] });
+      client.invalidateQueries({ queryKey: ['houses'] });
+    },
     onSettled: () => setPublishingHouseId(null),
   });
   const [publishMessage, setPublishMessage] = useState('');
