@@ -54,11 +54,11 @@ export function GalleryPage() {
   return (
     <main className={light ? 'theme-light min-h-screen bg-background text-foreground' : 'min-h-screen bg-background text-foreground'}>
       <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border/80 bg-background/90 px-4 py-3 backdrop-blur-lg sm:px-5">
-        <Link to="/" className="flex min-w-0 items-center gap-2.5">
+        <Link to={`/links/${house.slug}`} className="flex min-w-0 items-center gap-2.5">
           <BrandMark /><strong className="truncate text-sm">{house.title}</strong>
         </Link>
         <div className="ml-auto flex items-center gap-2">
-          <Link className="button-base hidden sm:inline-flex" to="/">Linktree</Link>
+          <Link className="button-base hidden sm:inline-flex" to={`/links/${house.slug}`}>Linktree</Link>
           <button className="icon-button" aria-label="Alternar tema" onClick={() => setLight((current) => !current)}>{light ? <Moon size={16} /> : <Sun size={16} />}</button>
         </div>
       </header>
@@ -82,7 +82,7 @@ export function GalleryPage() {
       {house.model3dUrl && <ShowroomEmbed title={house.title} modelUrl={house.model3dUrl} modelTitle={house.model3dTitle} modelDescription={house.model3dDescription} />}
 
       <section id="fotos" className="mx-auto max-w-6xl px-4 py-10 sm:px-5">
-        <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3"><div><h2 className="font-serif text-2xl font-semibold">Galeria de fotos</h2><p className="mt-1 text-sm text-muted-foreground">{house.photos.length} fotos</p></div><div className="flex flex-wrap gap-2"><button className="button-base" type="button" onClick={shareGallery}><Share2 size={15} />{shareFeedback || 'Compartilhar galeria'}</button><Link className="button-base" to="/"><ArrowLeft size={15} />Voltar ao perfil</Link></div></div>
+        <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3"><div><h2 className="font-serif text-2xl font-semibold">Galeria de fotos</h2><p className="mt-1 text-sm text-muted-foreground">{house.photos.length} fotos</p></div><div className="flex flex-wrap gap-2"><button className="button-base" type="button" onClick={shareGallery}><Share2 size={15} />{shareFeedback || 'Compartilhar galeria'}</button><Link className="button-base" to={`/links/${house.slug}`}><ArrowLeft size={15} />Voltar ao Linktree</Link></div></div>
         {house.photos.length ? <div className="photo-grid">{house.photos.map((photo, index) => <button className="photo-card text-left" key={photo.id || `${photo.url}-${index}`} onClick={() => setPhotoIndex(index)}><span className="photo-image"><img src={photo.url} alt={photo.label} loading="lazy" /></span><span className="flex items-center justify-between gap-2 p-2.5"><strong className="truncate text-xs font-semibold">{photo.label}</strong><Download size={14} className="shrink-0 text-muted-foreground" /></span></button>)}</div> : <Card><CardContent className="text-sm text-muted-foreground">Ainda não há fotos cadastradas para esta casa.</CardContent></Card>}
       </section>
       <footer className="pb-12 text-center text-xs text-muted-foreground">CASAS À VENDA · {house.slug}</footer>
