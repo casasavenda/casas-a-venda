@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <style>
+      :root { color-scheme: dark; background: #171311; }
+      html, body { min-width: 320px; min-height: 100%; margin: 0; background: #171311; color: #f1e9df; }
+      body:not(.app-ready) > .app-shell { visibility: hidden; }
+      body:not(.app-ready)::before {
+        content: 'Abrindo o modelo 3D…';
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        display: grid;
+        place-items: center;
+        background: #171311;
+        color: #cdb99f;
+        font: 600 0.82rem/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+        letter-spacing: 0.02em;
+      }
+      body.app-ready::before { display: none; }
+    </style>
+    <meta name="description" content="Visualização 3D da Casa Feitoria, em Feitoria, São Leopoldo/RS." />
+    <title>Casa Feitoria em 3D · Casas à Venda</title>
+    <script type="module" crossorigin src="./assets/index-DSUNSoVz.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-wH2GPmPX.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Casas à Venda — Casa Feitoria">
+          <span class="brand-mark" aria-hidden="true">CF</span>
+          <span>
+            <span class="eyebrow">CASAS À VENDA</span>
+            <span class="brand-title">Casa Feitoria</span>
+          </span>
+        </a>
+        <div class="topbar-actions">
+          <span class="status-pill" id="load-status" role="status" aria-live="polite">Carregando modelo…</span>
+          <button class="button button-quiet" id="theme-toggle" type="button" aria-label="Alternar tema" aria-pressed="false">Tema</button>
+        </div>
+      </header>
+
+      <main class="showroom-layout">
+        <section class="viewer-panel" aria-label="Visualização 3D das casas">
+          <div class="viewer-toolbar">
+            <div>
+              <span class="eyebrow">MODELO 3D</span>
+              <h1>Conheça a casa por fora</h1>
+            <p class="lead">Gire a casa, aproxime e afaste. Use os controles para alternar entre uma ou duas casas, abrir a vista de cima ou entrar nos ambientes.</p>
+            </div>
+          </div>
+
+          <div class="canvas-frame" id="canvas-frame">
+            <canvas
+              id="house-viewer"
+              class="viewer-canvas"
+              role="img"
+              aria-label="Modelo 3D externo da casa"
+            ></canvas>
+
+            <div class="loading-overlay" id="loading-overlay">
+              <div class="loader-ring" aria-hidden="true"></div>
+              <p id="loading-label">Abrindo o modelo 3D…</p>
+            </div>
+            <div class="error-overlay" id="error-overlay" hidden>
+              <span class="eyebrow">NÃO FOI POSSÍVEL ABRIR</span>
+              <h2>O modelo 3D não carregou.</h2>
+              <p id="error-label">Verifique se o arquivo casa.glb está publicado junto com o site.</p>
+              <button class="button button-primary" id="retry-button" type="button">Tentar novamente</button>
+            </div>
+            <div class="canvas-actions">
+              <button class="button button-soft house-selection-button" id="house-selection-toggle" type="button" aria-label="Alternar entre duas casas e uma casa" aria-pressed="false" title="Alternar entre duas casas e uma casa" disabled>2 casas</button>
+              <button class="button button-soft cutaway-button" id="cutaway-toggle" type="button" aria-label="Mostrar vista de cima sem cobertura" aria-pressed="false" title="Mostrar vista de cima sem cobertura" disabled>Vista de cima</button>
+              <button class="button button-soft interior-button" id="view-mode-toggle" type="button" aria-label="Entrar na vista interna em primeira pessoa" aria-pressed="false" title="Entrar na vista interna em primeira pessoa" disabled>Vista interna</button>
+              <button class="button button-soft capture-button" id="capture-button" type="button" disabled>Salvar imagem</button>
+            </div>
+            <div class="internal-controls" id="internal-controls" hidden>
+              <div class="internal-controls-heading">
+                <span class="eyebrow">VISTA INTERNA</span>
+                <strong id="internal-room-title">Selecione um ambiente</strong>
+              </div>
+              <label for="internal-house-toggle">Casas visíveis</label>
+              <button class="button button-soft internal-house-toggle" id="internal-house-toggle" type="button" aria-label="Alternar entre duas casas e uma casa" aria-pressed="false">2 casas</button>
+              <label for="internal-room-select">Ambiente</label>
+              <select id="internal-room-select" disabled></select>
+              <div class="internal-navigation">
+                <button class="button button-soft" id="internal-prev" type="button" disabled>Anterior</button>
+                <button class="button button-soft" id="internal-next" type="button" disabled>Próximo</button>
+              </div>
+              <p id="internal-room-detail">Câmera na altura dos olhos · escala real</p>
+            </div>
+            <div class="viewer-hint" id="viewer-hint">Arraste para girar · roda ou pinça para aproximar</div>
+          </div>
+
+          <div class="viewer-footer">
+            <div>
+              <span class="eyebrow">ARQUIVO DE ENTREGA</span>
+              <strong>casa.glb</strong>
+            <p>Modelo externo e navegação interna guiada prontos para apresentação no navegador.</p>
+            </div>
+            <dl class="measurements" id="model-measurements" aria-label="Dimensões aproximadas do modelo">
+              <div><dt>Largura</dt><dd>—</dd></div>
+              <div><dt>Profundidade</dt><dd>—</dd></div>
+              <div><dt>Altura</dt><dd>—</dd></div>
+            </dl>
+          </div>
+
+          <p class="accessibility-note">Esta visualização apresenta o exterior das casas, uma vista de cima sem a cobertura e uma navegação interna guiada por ambientes. Não há planta editável nem edição do projeto.</p>
+        </section>
+      </main>
+    </div>
+
+  </body>
+</html>

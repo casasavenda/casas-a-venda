@@ -1,0 +1,453 @@
+<title>Showroom 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --paper: #F5F1EA;
+    --card: #FFFFFF;
+    --ink: #23211D;
+    --ink-2: #514B41;
+    --muted: #7A7266;
+    --rule: #DFD8CC;
+    --rule-soft: #EAE4D9;
+    --accent: #8A5A34;
+    --accent-soft: #F0E4D6;
+    --blue: #2E5A6E;
+    --blue-soft: #E1EAEE;
+    --ok: #46654B;
+    --ok-bg: #E4EDE4;
+    --warn: #8A6524;
+    --warn-bg: #F5E9D2;
+    --stop: #9C3D31;
+    --stop-bg: #F7E2DE;
+    --shadow: 0 1px 2px rgba(35,33,29,.05), 0 8px 24px -12px rgba(35,33,29,.18);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #17150F; --card: #201D17; --ink: #F2EDE3; --ink-2: #C6BEB0;
+      --muted: #8F8677; --rule: #353026; --rule-soft: #2A261E;
+      --accent: #D19A63; --accent-soft: #35281A;
+      --blue: #8FB6C6; --blue-soft: #1E2A30;
+      --ok: #93B598; --ok-bg: #1D2A1F;
+      --warn: #D3A961; --warn-bg: #2E2513;
+      --stop: #D98878; --stop-bg: #33201C;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #17150F; --card: #201D17; --ink: #F2EDE3; --ink-2: #C6BEB0;
+    --muted: #8F8677; --rule: #353026; --rule-soft: #2A261E;
+    --accent: #D19A63; --accent-soft: #35281A;
+    --blue: #8FB6C6; --blue-soft: #1E2A30;
+    --ok: #93B598; --ok-bg: #1D2A1F;
+    --warn: #D3A961; --warn-bg: #2E2513;
+    --stop: #D98878; --stop-bg: #33201C;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px; line-height: 1.62; -webkit-font-smoothing: antialiased;
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px 96px; }
+  .mono { font-family: "Space Mono", ui-monospace, monospace; }
+
+  header { padding: 64px 0 40px; border-bottom: 2px solid var(--ink); margin-bottom: 40px; }
+  .eyebrow {
+    font-family: "Space Mono", monospace; font-size: 11.5px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 18px;
+  }
+  h1 {
+    font-family: "Fraunces", Georgia, serif; font-weight: 600;
+    font-size: clamp(34px, 6vw, 52px); line-height: 1.05; letter-spacing: -.02em; text-wrap: balance;
+  }
+  .lede { margin-top: 20px; font-size: 18px; color: var(--ink-2); max-width: 62ch; }
+
+  section { margin-top: 56px; }
+  h2 {
+    font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 26px;
+    letter-spacing: -.01em; line-height: 1.2; text-wrap: balance;
+    padding-bottom: 12px; border-bottom: 1px solid var(--rule); margin-bottom: 24px;
+  }
+  h2 .num {
+    font-family: "Space Mono", monospace; font-size: 13px; color: var(--accent);
+    margin-right: 12px; vertical-align: 3px;
+  }
+  h3 { font-weight: 700; font-size: 15px; letter-spacing: .02em; margin: 30px 0 10px; }
+  p { margin-bottom: 14px; max-width: 68ch; }
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 600; }
+  code {
+    font-family: "Space Mono", monospace; font-size: .86em;
+    background: var(--rule-soft); padding: 2px 6px; border-radius: 4px; color: var(--ink-2);
+  }
+  ul { margin: 0 0 14px 0; padding-left: 20px; max-width: 68ch; }
+  li { margin-bottom: 7px; }
+  li::marker { color: var(--muted); }
+
+  .hero-callout {
+    background: var(--card); border: 1px solid var(--accent);
+    border-radius: 10px; padding: 26px 28px; box-shadow: var(--shadow); margin-bottom: 14px;
+  }
+  .hero-callout .chip { margin-bottom: 12px; }
+  .hero-callout b.t {
+    font-family: "Fraunces", Georgia, serif; font-size: 22px; font-weight: 600;
+    display: block; line-height: 1.25; margin-bottom: 10px; letter-spacing: -.01em;
+  }
+  .hero-callout p { font-size: 15.5px; color: var(--ink-2); }
+
+  .verdicts { display: grid; gap: 14px; }
+  .verdict {
+    background: var(--card); border: 1px solid var(--rule); border-left: 4px solid var(--stop);
+    border-radius: 8px; padding: 18px 20px; box-shadow: var(--shadow);
+  }
+  .verdict.good { border-left-color: var(--ok); }
+  .verdict.solved { border-left-color: var(--blue); }
+  .verdict-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .verdict-head b { font-size: 15.5px; font-weight: 700; letter-spacing: -.005em; }
+  .verdict p { font-size: 14.5px; color: var(--ink-2); margin: 0; }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 5px; border-radius: 999px;
+    padding: 3px 10px; font-family: "Space Mono", monospace;
+    font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap;
+  }
+  .chip.stop { background: var(--stop-bg); color: var(--stop); }
+  .chip.warn { background: var(--warn-bg); color: var(--warn); }
+  .chip.ok { background: var(--ok-bg); color: var(--ok); }
+  .chip.info { background: var(--blue-soft); color: var(--blue); }
+  .chip.accent { background: var(--accent-soft); color: var(--accent); }
+
+  .tablewrap { overflow-x: auto; margin: 18px 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--card); }
+  table { width: 100%; border-collapse: collapse; min-width: 480px; }
+  th {
+    text-align: left; font-family: "Space Mono", monospace; font-size: 10.5px;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+    padding: 12px 14px; border-bottom: 1px solid var(--rule); background: var(--rule-soft);
+    white-space: nowrap; font-weight: 700;
+  }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--rule-soft); font-size: 14px; vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: "Space Mono", monospace; font-size: 13px; }
+  td b { font-weight: 600; }
+  td small { display: block; color: var(--muted); font-size: 12.5px; line-height: 1.45; margin-top: 3px; }
+
+  .data { background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: 16px 18px; margin: 18px 0; overflow-x: auto; }
+  .data pre { font-family: "Space Mono", monospace; font-size: 12.5px; line-height: 1.75; color: var(--ink-2); white-space: pre; }
+  .data .k { color: var(--blue); }
+  .data .bad { color: var(--stop); font-weight: 700; }
+  .data .good { color: var(--ok); font-weight: 700; }
+  .data .c { color: var(--muted); }
+  .data .warn { color: var(--warn); font-weight: 700; }
+
+  .note { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 18px 0; }
+  .note p { font-size: 14.5px; color: var(--ink-2); max-width: none; }
+  .note b { color: var(--ink); }
+
+  .pipe { display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px; margin: 18px 0; }
+  .pipe-step { flex: 1 1 140px; background: var(--card); border: 1px solid var(--rule); border-radius: 8px; padding: 13px 14px; }
+  .pipe-step.new { border-color: var(--accent); background: var(--accent-soft); }
+  .pipe-step.dead { opacity: .55; }
+  .pipe-step .st {
+    font-family: "Space Mono", monospace; font-size: 9.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 5px;
+  }
+  .pipe-step.new .st { color: var(--accent); }
+  .pipe-step b { font-size: 13.5px; font-weight: 700; display: block; line-height: 1.3; }
+  .pipe-step span.d { font-size: 12px; color: var(--ink-2); display: block; margin-top: 4px; line-height: 1.45; }
+
+  .phase { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--rule-soft); }
+  .phase:last-child { border-bottom: 0; }
+  .phase-n {
+    flex: 0 0 34px; height: 34px; border-radius: 8px; background: var(--accent-soft);
+    color: var(--accent); display: grid; place-items: center;
+    font-family: "Space Mono", monospace; font-size: 13px; font-weight: 700;
+  }
+  .phase-b { flex: 1; min-width: 0; }
+  .phase-b b { font-size: 15px; font-weight: 700; display: block; }
+  .phase-b p { font-size: 13.5px; color: var(--ink-2); margin: 4px 0 0; }
+  .phase-b .deliver { display: block; margin-top: 6px; font-size: 12.5px; color: var(--muted); }
+  .phase-b .deliver em { color: var(--accent); font-style: normal; font-weight: 600; }
+
+  footer {
+    margin-top: 72px; padding-top: 28px; border-top: 2px solid var(--ink);
+    font-family: "Space Mono", monospace; font-size: 11.5px; color: var(--muted);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 18px 72px; }
+    header { padding: 44px 0 32px; }
+    body { font-size: 15.5px; }
+  }
+</style>
+
+<div class="wrap">
+
+<header>
+  <span class="eyebrow">Dossiê técnico · Projeto Casas Feitoria</span>
+  <h1>Showroom 3D</h1>
+  <p class="lede">Por que o GLB não sustenta o que você quer, o que o arquivo original do Sweet Home 3D entrega de graça, e a arquitetura que viabiliza as quinze funcionalidades da lista — incluindo mover paredes.</p>
+</header>
+
+<section id="virada">
+  <h2>A virada</h2>
+
+  <div class="hero-callout">
+    <span class="chip accent">Descoberta decisiva</span>
+    <b class="t">O arquivo <code style="font-size:.8em">.sh3d</code> é paramétrico. O GLB é só a fotografia dele.</b>
+    <p>Verifiquei o formato oficial do Sweet Home 3D. O arquivo do seu projeto guarda cada parede como <b>coordenada inicial, coordenada final, espessura e altura</b> — mais a topologia de quais paredes se conectam a quais. Guarda o <b>nome de cada cômodo</b>, a cor de cada face de parede, do piso e do forro, a posição paramétrica de cada porta e janela, e até as folhas que abrem. Tudo aquilo que o GLB perdeu está intacto na origem.</p>
+  </div>
+
+  <p>Isso reposiciona o projeto. Não estamos tentando arrancar interatividade de um modelo assado — estamos lendo a planta paramétrica e <strong>desenhando a casa em tempo real</strong>, do mesmo jeito que o próprio Sweet Home 3D faz. Com isso, mover uma parede deixa de ser hack e passa a ser a operação natural do sistema.</p>
+</section>
+
+<section id="evidencia">
+  <h2><span class="num">01</span>A evidência: o que o GLB perdeu</h2>
+  <p>Analisei o binário do seu GLB nó por nó. Estes dados continuam válidos — são exatamente a justificativa para mudar de abordagem.</p>
+
+  <div class="data">
+<pre><span class="c">// BANHEIRO ENTRE QUARTOS.glb — 0,42 MB — gerado por Aspose.3D 25.11.0</span>
+<span class="k">nodes / meshes</span>   211        cada peça solta, <span class="bad">hierarquia plana</span>
+<span class="k">materials</span>         <span class="bad">0</span>        ← nenhum material
+<span class="k">textures</span>          <span class="bad">0</span>        ← nenhuma textura
+<span class="k">TEXCOORD_0</span>      <span class="bad">1</span>/211      ← só 1 peça com coordenada de textura
+<span class="k">animations</span>        0
+<span class="k">escala</span>          884 × 280 × 1016 cm  <span class="bad">lida como metros</span>
+<span class="k">telhado</span>          <span class="bad">não existe</span></pre>
+  </div>
+
+  <p>Três consequências que inviabilizam o showroom sobre esse arquivo: <strong>sem material não há o que colorir</strong>; <strong>sem UV não há como aplicar textura</strong> de piso ou madeira; e <strong>sem parâmetro não há como mover parede</strong>, porque os vãos de porta estão recortados permanentemente na malha.</p>
+
+  <p>Some-se a limitação do Model Viewer, que confirmei lendo o código-fonte: a API pública expõe <code>model.materials</code> e <code>materialFromPoint()</code>, e nada mais. Não há como esconder uma peça, saber qual objeto foi clicado ou mover qualquer coisa. Os autores limitaram o escopo de propósito — o componente foi feito para <em>apresentar</em> um modelo, e você precisa <em>operar</em> um.</p>
+
+  <div class="note">
+    <p><b>O que o GLB continua fazendo bem:</b> ele guarda as malhas detalhadas de móveis, portas e janelas — geometria complexa que não vale a pena redesenhar. Na arquitetura proposta ele não é descartado: vira a biblioteca de objetos, e não mais a planta da casa.</p>
+  </div>
+</section>
+
+<section id="sh3d">
+  <h2><span class="num">02</span>O que o <code>.sh3d</code> entrega</h2>
+  <p>Confirmei atributo por atributo no formato oficial. Cada linha desta tabela destrava uma funcionalidade da sua lista:</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Dado disponível</th><th>Destrava</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>Parede paramétrica</b><small><code>xStart, yStart, xEnd, yEnd, thickness, height, heightAtEnd, arcExtent</code></small></td>
+          <td>Gerar, mover e redimensionar paredes em tempo real</td>
+        </tr>
+        <tr>
+          <td><b>Topologia das paredes</b><small><code>wallAtStart, wallAtEnd</code> — qual parede encosta em qual</small></td>
+          <td>Ao arrastar uma parede, as vizinhas acompanham o canto. É assim que o SH3D faz</td>
+        </tr>
+        <tr>
+          <td><b>Cores por face</b><small><code>leftSideColor, rightSideColor, topColor</code> + textura de cada lado</small></td>
+          <td>Suporte completo no formato — mas <b>este projeto não usa</b>. Ver seção 03</td>
+        </tr>
+        <tr>
+          <td><b>Nome do cômodo</b><small><code>room name</code> + polígono em <code>point+</code></small></td>
+          <td>"Suíte", "Banheiro" na interface. Sem mapeamento manual</td>
+        </tr>
+        <tr>
+          <td><b>Piso e forro separados</b><small><code>floorVisible, floorColor, ceilingVisible, ceilingColor</code> + texturas</small></td>
+          <td>Ocultar teto, trocar piso, por ambiente</td>
+        </tr>
+        <tr>
+          <td><b>Porta / janela paramétrica</b><small><code>x, y, angle, width, height, elevation, wallWidth, wallHeight, cutOutShape</code></small></td>
+          <td>Recorte do vão calculado, não assado. A parede pode mover que o vão acompanha</td>
+        </tr>
+        <tr>
+          <td><b>Folhas que abrem</b><small>elemento <code>sash</code> com eixo e ângulo</small></td>
+          <td>Animar portas e janelas abrindo</td>
+        </tr>
+        <tr>
+          <td><b>Luzes</b><small><code>light</code> com <code>lightSource</code> posicionado</small></td>
+          <td>Iluminação real do projeto; modo dia/noite</td>
+        </tr>
+        <tr>
+          <td><b>Móveis</b><small><code>x, y, angle, width, depth, height, color, name, catalogId</code></small></td>
+          <td>Ocultar/exibir por objeto, com nome legível</td>
+        </tr>
+        <tr>
+          <td><b>Níveis</b><small><code>level</code> com <code>elevation</code></small></td>
+          <td>Casas de dois pavimentos, alternando andar</td>
+        </tr>
+        <tr>
+          <td><b>Materiais e texturas</b><small><code>material</code>, <code>texture</code> com escala e ângulo</small></td>
+          <td>Base do catálogo de acabamentos</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="dados">
+  <h2><span class="num">03</span>Os dados reais desta casa</h2>
+  <p>Você mandou o arquivo, eu abri e li o <code>Home.xml</code> por dentro. Tudo que o formato promete está lá — mas apareceu <strong>uma correção importante</strong> a uma previsão minha. Inventário real, extraído do seu projeto:</p>
+
+  <div class="data">
+<pre><span class="c">// BANHEIRO ENTRE QUARTOS.sh3d — Sweet Home 3D 7.4</span>
+<span class="k">paredes</span>          13     <span class="c">63,4 m no total · esp. 15/20/25 cm · alt. 280 cm</span>
+                        <span class="c">(uma de 150 cm — meia-parede)</span>
+<span class="k">topologia</span>      <span class="warn">8</span>/13     ← só 8 declaram a quem se conectam
+<span class="k">ambientes</span>         7     6 nomeados + o lote
+<span class="k">aberturas</span>        12     5 portas · 1 porta de garagem
+                        4 janelas duplas · 2 janelas fixas
+<span class="k">folhas (sash)</span>   13     <span class="good">animáveis: portas e janelas abrem</span>
+<span class="k">móveis</span>            1     Sofá 200 × 86,5 × 88 cm
+<span class="k">luzes</span>             0
+<span class="k">níveis</span>            0     <span class="c">térreo único</span>
+<span class="k">linhas de cota</span>   15
+<span class="k">planta</span>          8,7 m × 9,8 m
+<span class="k">ambiente 3D</span>     céu #CCE4FC · solo #087300 + textura de grama</pre>
+  </div>
+
+  <h3>Os seis ambientes, com os nomes que você deu</h3>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Ambiente</th><th class="num">Área</th><th>Forro</th></tr></thead>
+      <tbody>
+        <tr><td><b>SALA/COZINHA</b></td><td class="num">33,5 m²</td><td>sim</td></tr>
+        <tr><td><b>QUARTO 2</b></td><td class="num">13,6 m²</td><td>sim</td></tr>
+        <tr><td><b>QUARTO 1</b></td><td class="num">12,5 m²</td><td>sim</td></tr>
+        <tr><td><b>QUARTO 3</b></td><td class="num">9,3 m²</td><td>sim</td></tr>
+        <tr><td><b>CORREDOR</b></td><td class="num">4,2 m²</td><td>sim</td></tr>
+        <tr><td><b>BANHEIRO</b></td><td class="num">2,9 m²</td><td>sim</td></tr>
+        <tr><td>(sem nome — o lote)<small>É o terreno, não um cômodo. Forro desligado no projeto</small></td><td class="num">86,9 m²</td><td>não</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Os nomes vêm prontos do arquivo. <strong>Aquele trabalho manual de mapear <code>room_16 → "Suíte"</code> que eu previa: não existe mais.</strong> A interface já pode dizer "Banheiro" e "Sala/Cozinha" desde o primeiro dia.</p>
+
+  <div class="verdict" style="margin-top:24px">
+    <div class="verdict-head"><span class="chip warn">Correção</span><b>A casa não tem cores. Eu tinha previsto que teria.</b></div>
+    <p>Eu escrevi que "a casa já nasce com as cores do seu projeto". Conferindo o arquivo real, isso <b>não vale aqui</b>: existem apenas três atributos de cor no projeto inteiro (uma parede cinza e um topo branco). Nenhuma cor de piso, nenhuma cor de forro, nenhum revestimento. A única textura do arquivo é a grama do terreno. Ou seja: a sua casa está em cinza padrão também dentro do Sweet Home 3D.</p>
+  </div>
+
+  <p>Isso não quebra nada — mas muda de quem é a responsabilidade. O catálogo de acabamentos <strong>não vai ler as cores do projeto; ele vai propor as cores</strong>. Para um showroom isso é até melhor: você controla uma paleta curada e bonita, em vez de herdar o que estiver salvo. E se um dia você pintar as paredes no Sweet Home 3D, o sistema passa a respeitar isso automaticamente, porque o suporte está no formato.</p>
+
+  <div class="note">
+    <p><b>Segundo achado:</b> só <b>8 das 13 paredes</b> declaram a quem se conectam. Para arrastar uma parede e as vizinhas acompanharem o canto (fase 6), as outras 5 precisarão ter a conexão deduzida pela geometria — paredes que terminam no mesmo ponto. É resolvível e já está previsto, mas é trabalho a mais que eu não teria enxergado sem abrir o arquivo.</p>
+  </div>
+</section>
+
+<section id="matriz">
+  <h2><span class="num">04</span>As quinze funcionalidades, revisitadas</h2>
+  <p>Com o <code>.sh3d</code> como fonte, a matriz muda bastante em relação à primeira análise:</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Funcionalidade</th><th>Sobre o GLB</th><th>Sobre o .sh3d</th></tr></thead>
+      <tbody>
+        <tr><td>Selecionar parede</td><td><span class="chip warn">Com preparo</span></td><td><span class="chip ok">Nativo</span></td></tr>
+        <tr><td><b>Mover / arrastar parede</b></td><td><span class="chip stop">Inviável</span></td><td><span class="chip ok">Viável</span></td></tr>
+        <tr><td>Ocultar / exibir parede</td><td><span class="chip warn">Com preparo</span></td><td><span class="chip ok">Nativo</span></td></tr>
+        <tr><td>Ocultar / exibir teto</td><td><span class="chip warn">Com preparo</span></td><td><span class="chip ok">Nativo</span></td></tr>
+        <tr><td>Ocultar / exibir telhado</td><td><span class="chip stop">Não existe</span></td><td><span class="chip warn">Modelar ou gerar</span></td></tr>
+        <tr><td>Alterar cores</td><td><span class="chip stop">Sem material</span></td><td><span class="chip ok">Nativo</span></td></tr>
+        <tr><td>Materiais e acabamentos</td><td><span class="chip stop">Sem UV</span></td><td><span class="chip ok">Nativo</span></td></tr>
+        <tr><td>Trocar pisos</td><td><span class="chip stop">Sem UV</span></td><td><span class="chip ok">Nativo</span></td></tr>
+        <tr><td>Ocultar / exibir objetos</td><td><span class="chip warn">Heurística</span></td><td><span class="chip ok">Nativo</span></td></tr>
+        <tr><td>Ambientes individualmente</td><td><span class="chip warn">Sem nomes</span></td><td><span class="chip ok">Com nomes</span></td></tr>
+        <tr><td>Modos de visualização</td><td><span class="chip ok">Sim</span></td><td><span class="chip ok">Sim</span></td></tr>
+        <tr><td>Controles de câmera</td><td><span class="chip ok">Sim</span></td><td><span class="chip ok">Sim, + enquadrar por cômodo</span></td></tr>
+        <tr><td>Animações e transições</td><td><span class="chip ok">Sim</span></td><td><span class="chip ok">Sim, + portas abrindo</span></td></tr>
+        <tr><td>Etapas da construção</td><td><span class="chip warn">6 de 8</span></td><td><span class="chip ok">7 de 8, mais precisas</span></td></tr>
+        <tr><td>Realidade Aumentada</td><td><span class="chip warn">Corrigir escala</span></td><td><span class="chip ok">Nativo, em metros</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="arquitetura">
+  <h2><span class="num">05</span>A arquitetura</h2>
+
+  <div class="pipe">
+    <div class="pipe-step dead"><span class="st">hoje</span><b>Sweet Home 3D</b><span class="d">projeto</span></div>
+    <div class="pipe-step dead"><span class="st">hoje</span><b>Aspose.3D</b><span class="d">perde tudo</span></div>
+    <div class="pipe-step dead"><span class="st">hoje</span><b>Model Viewer</b><span class="d">só gira o modelo</span></div>
+  </div>
+  <div class="pipe">
+    <div class="pipe-step new"><span class="st">proposto</span><b>Arquivo .sh3d</b><span class="d">a planta paramétrica, fonte da verdade</span></div>
+    <div class="pipe-step new"><span class="st">proposto</span><b>Leitor + Motor</b><span class="d">gera a casa em Three.js em tempo real</span></div>
+    <div class="pipe-step new"><span class="st">proposto</span><b>Showroom</b><span class="d">a camada de interação e interface</span></div>
+    <div class="pipe-step"><span class="st">mantido</span><b>Model Viewer</b><span class="d">modo AR no celular</span></div>
+  </div>
+
+  <h3>As três camadas</h3>
+  <ul>
+    <li><b>Leitor.</b> Abre o <code>.sh3d</code> (que é um ZIP), lê o <code>Home.xml</code> e devolve um modelo de dados limpo: paredes, cômodos, aberturas, móveis, luzes, níveis. É a peça que transforma o arquivo do Sweet Home 3D em algo que o navegador entende.</li>
+    <li><b>Motor.</b> Desenha a casa a partir desses dados usando Three.js. Parede vira caixa com o vão recortado; cômodo vira polígono extrudado para piso e forro; móveis e portas entram como malhas prontas. Quando um parâmetro muda, ele redesenha só o que foi afetado — é isso que torna mover parede fluido.</li>
+    <li><b>Showroom.</b> A experiência que o cliente vê: seleção, destaque, ocultar com transição, câmera que enquadra o cômodo, catálogo de acabamentos, etapas da construção, botão de AR.</li>
+  </ul>
+
+  <h3>De onde vêm as malhas de móveis e portas</h3>
+  <p>Paredes, pisos e forros são geometria simples e nascem por programa. Já um sofá ou uma janela detalhada não vale a pena redesenhar. Duas fontes possíveis, e a segunda é a que recomendo começar:</p>
+  <ul>
+    <li>Extrair os modelos embutidos no próprio <code>.sh3d</code> — mais correto, um pouco mais trabalhoso.</li>
+    <li><b>Reaproveitar o GLB que você já exporta</b>, usando-o só como biblioteca de objetos: as peças de móveis e aberturas são casadas com os dados paramétricos pela posição. Aproveita o que já funciona hoje e evita trabalho duplicado.</li>
+  </ul>
+
+  <h3>Onde o Model Viewer continua</h3>
+  <p>No modo AR — e essa parte fica elegante. O cliente configura a casa do jeito que quiser (esconde o telhado, escolhe o piso, oculta paredes), toca em <em>"ver no terreno"</em>, e o motor exporta <strong>aquele estado exato</strong> como GLB e entrega ao Model Viewer, que resolve WebXR no Android e Quick Look no iPhone sem escrever uma linha de código de AR. Você mantém o melhor do que já usa, no lugar certo.</p>
+
+  <div class="note">
+    <p><b>Uma consequência que vale notar:</b> como o motor gera a casa a partir de parâmetros, ele funciona para <em>qualquer</em> casa que você desenhar no Sweet Home 3D, sem preparo manual por projeto. Você desenha, salva o <code>.sh3d</code>, sobe no painel — e o showroom existe. Isso resolve de vez a questão de escalar para várias casas.</p>
+  </div>
+</section>
+
+<section id="fases">
+  <h2><span class="num">06</span>Como construir, em fases</h2>
+  <p>É um projeto de verdade, não um ajuste. Mas cada fase entrega algo utilizável sozinho — você não espera o fim para ter valor no ar.</p>
+
+  <div class="phase"><div class="phase-n">1</div><div class="phase-b"><b>Leitor + casa em pé</b>
+    <p>Ler o <code>.sh3d</code> e gerar paredes, pisos, forros e vãos com as cores do próprio projeto. Câmera orbital, escala correta em metros, centrada na origem.</p>
+    <span class="deliver">Entrega: <em>a casa navegável no navegador, já colorida e com os nomes dos cômodos.</em></span></div></div>
+
+  <div class="phase"><div class="phase-n">2</div><div class="phase-b"><b>Interação e visibilidade</b>
+    <p>Clicar para selecionar com destaque, ocultar e exibir com transição suave: parede, teto, móvel, ambiente. Modos prontos — ver interior, sem paredes, vista de topo. Câmera que enquadra o cômodo escolhido.</p>
+    <span class="deliver">Entrega: <em>o showroom já vendável — cobre a maior parte do valor da lista.</em></span></div></div>
+
+  <div class="phase"><div class="phase-n">3</div><div class="phase-b"><b>Acabamentos</b>
+    <p>Catálogo de cores, pisos e revestimentos aplicáveis por parede e por ambiente, com textura de verdade.</p>
+    <span class="deliver">Entrega: <em>o cliente personaliza a casa dele.</em></span></div></div>
+
+  <div class="phase"><div class="phase-n">4</div><div class="phase-b"><b>Realidade Aumentada</b>
+    <p>Exportar o estado atual como GLB e abrir no Model Viewer. Fase curta, retorno alto — por isso vem antes das mais pesadas.</p>
+    <span class="deliver">Entrega: <em>"ver no terreno" pelo celular.</em></span></div></div>
+
+  <div class="phase"><div class="phase-n">5</div><div class="phase-b"><b>Etapas da construção</b>
+    <p>Terreno, fundação e estrutura derivados do contorno paramétrico das paredes; paredes subindo; cobertura; acabamentos entrando; casa pronta. Sete das oito etapas saem dos dados — só instalações precisam ser desenhadas.</p>
+    <span class="deliver">Entrega: <em>a casa nascendo, em animação.</em></span></div></div>
+
+  <div class="phase"><div class="phase-n">6</div><div class="phase-b"><b>Mover paredes</b>
+    <p>Arrastar uma parede e ver a casa se reorganizar, com as paredes conectadas acompanhando o canto e os vãos, pisos e forros recalculando. É a fase mais complexa e a de menor retorno comercial — por isso vem por último, quando todo o resto já estiver rodando.</p>
+    <span class="deliver">Entrega: <em>replanta ao vivo.</em></span></div></div>
+
+  <div class="note">
+    <p><b>Minha recomendação de corte:</b> as fases 1 a 4 entregam praticamente toda a experiência de showroom que vende a casa. As fases 5 e 6 são impressionantes, mas nenhuma delas é o que faz o cliente decidir comprar. Vale planejar as quatro primeiras com cuidado e tratar as duas últimas como evolução — sem tirá-las do desenho, para que a arquitetura já as comporte.</p>
+  </div>
+</section>
+
+<section id="preciso">
+  <h2><span class="num">07</span>O que falta decidir</h2>
+  <p>O arquivo chegou e está validado — a análise técnica está fechada. Restam <strong>duas decisões suas</strong> antes de eu escrever o plano de implementação para o Codex:</p>
+  <ul>
+    <li><b>O telhado.</b> Continua sendo o único elemento que não existe em lugar nenhum — nem no GLB, nem no <code>.sh3d</code>. Você consegue desenhá-lo no Sweet Home 3D e salvar de novo? Se sim, ele entra pelo mesmo caminho de todo o resto. Se não, eu gero um telhado simples a partir do perímetro das paredes — menos fiel ao projeto, porém automático para qualquer casa.</li>
+    <li><b>Até onde vamos agora.</b> Minha recomendação é fechar o escopo nas <b>fases 1 a 4</b>, que entregam o showroom que efetivamente vende a casa, e deixar as fases 5 e 6 mapeadas como evolução. A arquitetura já comporta as seis desde o início, então nada precisa ser refeito depois.</li>
+  </ul>
+  <p>Com essas duas respostas eu escrevo o <code>PLAN.md</code> — autocontido, para o Codex implementar sem precisar ler esta conversa.</p>
+</section>
+
+<footer>
+  <span>Baseado na análise binária do GLB e no formato oficial do Sweet Home 3D</span>
+  <span>24/08/2026</span>
+</footer>
+
+</div>

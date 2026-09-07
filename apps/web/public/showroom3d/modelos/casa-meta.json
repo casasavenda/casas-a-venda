@@ -1,0 +1,50 @@
+{
+  "generatedAt": "2026-08-26",
+  "sourceFile": "casa geminada bruno chato (1).glb",
+  "sourceUnits": "meters",
+  "houseDimensionsMeters": {
+    "width": 10,
+    "height": 5.2,
+    "depth": 30
+  },
+  "sourceBoundsMinMeters": {
+    "x": 34.14,
+    "y": 0,
+    "z": -36.898
+  },
+  "sourceBoundsMaxMeters": {
+    "x": 44.14,
+    "y": 5.2,
+    "z": -6.898
+  },
+  "presentationAlignment": {
+    "centerHorizontal": true,
+    "groundLevelY": 0,
+    "rotationDegreesY": 0,
+    "scale": 8
+  },
+  "cameraTargetMeters": {
+    "x": 0,
+    "y": 2.6,
+    "z": 0
+  },
+  "presentationFilter": {
+    "selectedArea": "conjunto de casas da direita",
+    "removedAreas": "conjuntos de casas da esquerda e faixa global da exportação",
+    "method": "caixas espaciais dos nós de primeiro nível"
+  },
+  "primitiveCount": 2342,
+  "materialCount": 59,
+  "transparentMaterialCount": 4,
+  "triangleCount": 560499,
+  "textureCount": 46,
+  "imageCount": 46,
+  "terrain": {
+    "generatedByShowroom": true,
+    "widthMeters": 43.37,
+    "depthMeters": 35.68,
+    "grassMarginMeters": 2,
+    "grayBorderMeters": 0.28,
+    "baseThicknessMeters": 0.16
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "casas-a-venda",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Monolito modular para catálogo, galeria e showroom 3D de casas.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -k \"npm run dev:api\" \"npm run dev:web\" \"npm run dev:showroom\"",
+    "dev:api": "npm run dev --workspace @casas/api",
+    "dev:web": "npm run dev --workspace @casas/web",
+    "dev:showroom": "npm run dev --prefix showroom3d -- --port 5174",
+    "build": "npm run build --workspace @casas/web && npm run typecheck",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:showroom": "npm run test --prefix showroom3d"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

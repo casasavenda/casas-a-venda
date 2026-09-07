@@ -1,0 +1,1139 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Casa Feitoria · Casas à Venda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================================
+     Tokens — paleta terrosa/serifada (versão preferida por Andrew),
+     mantendo os MESMOS nomes de variável usados no resto do arquivo
+     e no padrão de componentes do projeto Nathan (só a cor/tipografia
+     mudou, a estrutura/alinhamento continua).
+  ============================================================ */
+  :root {
+    --background: 28 12% 13%;
+    --foreground: 36 20% 93%;
+    --card: 30 12% 16%;
+    --primary: 30 55% 66%;
+    --primary-foreground: 25 30% 12%;
+    --secondary: 28 9% 18%;
+    --muted: 28 9% 18%;
+    --muted-foreground: 30 9% 62%;
+    --accent: 28 9% 21%;
+    --border: 28 9% 23%;
+    --input: 28 9% 27%;
+    --ring: 30 55% 66%;
+    --success: 108 18% 55%;
+    --success-bg: 108 14% 18%;
+    --warning: 32 40% 60%;
+    --warning-bg: 32 22% 18%;
+    --danger: 6 45% 62%;
+    --danger-bg: 6 22% 18%;
+    --surface: 24 14% 9%;
+    --divider: 28 9% 21%;
+    --radius: 0.625rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --background: 28 12% 13%; --foreground: 36 20% 93%; --card: 30 12% 16%;
+      --primary: 30 55% 66%; --primary-foreground: 25 30% 12%;
+      --secondary: 28 9% 18%; --muted: 28 9% 18%; --muted-foreground: 30 9% 62%;
+      --accent: 28 9% 21%; --border: 28 9% 23%; --input: 28 9% 27%; --ring: 30 55% 66%;
+      --success: 108 18% 55%; --success-bg: 108 14% 18%;
+      --warning: 32 40% 60%; --warning-bg: 32 22% 18%;
+      --danger: 6 45% 62%; --danger-bg: 6 22% 18%;
+      --surface: 24 14% 9%; --divider: 28 9% 21%;
+    }
+  }
+  :root[data-theme="dark"] {
+    --background: 28 12% 13%; --foreground: 36 20% 93%; --card: 30 12% 16%;
+    --primary: 30 55% 66%; --primary-foreground: 25 30% 12%;
+    --secondary: 28 9% 18%; --muted: 28 9% 18%; --muted-foreground: 30 9% 62%;
+    --accent: 28 9% 21%; --border: 28 9% 23%; --input: 28 9% 27%; --ring: 30 55% 66%;
+    --success: 108 18% 55%; --success-bg: 108 14% 18%;
+    --warning: 32 40% 60%; --warning-bg: 32 22% 18%;
+    --danger: 6 45% 62%; --danger-bg: 6 22% 18%;
+    --surface: 24 14% 9%; --divider: 28 9% 21%;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
+  svg { width: 1em; height: 1em; flex: 0 0 auto; vertical-align: -.125em; }
+  body {
+    background: hsl(var(--surface)); color: hsl(var(--foreground));
+    font-family: "Work Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: "Space Mono", ui-monospace, monospace; }
+  h1, h2, .lt-title { font-family: "Fraunces", Georgia, serif; text-wrap: balance; }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+  :focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 2px; }
+
+  /* ---------- protótipo: seletor de tela (não faz parte do produto real) ---------- */
+  .proto-bar {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    background: hsl(20 14% 11%); color: hsl(0 0% 88%);
+    padding: 9px 20px; font-size: 12px;
+  }
+  .proto-btn.locked { border-color: hsl(6 55% 55% / .5); }
+  .proto-lock { display: inline-flex; margin-left: 3px; opacity: .8; }
+  .proto-lock svg { width: 11px; height: 11px; }
+  .proto-bar strong { color: #fff; }
+  .proto-btn {
+    border: 1px solid hsl(0 0% 100% / .18); background: hsl(0 0% 100% / .06);
+    color: inherit; border-radius: 999px; padding: 5px 13px; font: inherit; font-size: 12px;
+    cursor: pointer;
+  }
+  .proto-btn[aria-pressed="true"] { background: hsl(var(--primary)); border-color: hsl(var(--primary)); color: #fff; font-weight: 600; }
+  .proto-note { margin-left: auto; color: hsl(0 0% 100% / .55); max-width: 320px; font-size: 11.5px; }
+  .skip-link {
+    position: absolute; left: 10px; top: -50px; z-index: 200;
+    background: hsl(var(--primary)); color: hsl(var(--primary-foreground));
+    padding: 10px 16px; border-radius: 8px; font-weight: 600; font-size: 13px;
+    text-decoration: none; transition: top .15s;
+  }
+  .skip-link:focus { top: 46px; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ---------- botões / campos / badges — subset do app.css ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    height: 2.25rem; border: 1px solid hsl(var(--border)); border-radius: .5625rem;
+    background: hsl(var(--background)); color: hsl(var(--foreground));
+    padding: 0 .875rem; font: inherit; font-size: .8125rem; font-weight: 500;
+    cursor: pointer; white-space: nowrap; transition: background 140ms ease, border-color 140ms ease;
+  }
+  .btn:hover { background: hsl(var(--accent)); }
+  .btn svg { width: 15px; height: 15px; stroke-width: 1.8; }
+  .btn-primary { border-color: hsl(var(--primary)); background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); font-weight: 600; }
+  .btn-primary:hover { background: hsl(var(--primary) / .9); }
+  .btn[disabled] { opacity: .5; pointer-events: none; }
+  .icon-btn {
+    width: 2.25rem; height: 2.25rem; padding: 0; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid hsl(var(--border)); border-radius: .5625rem;
+    background: hsl(var(--background)); color: hsl(var(--muted-foreground)); cursor: pointer;
+  }
+  .icon-btn:hover { background: hsl(var(--accent)); color: hsl(var(--foreground)); }
+  .icon-btn.on-dark { border-color: hsl(0 0% 100% / .3); background: hsl(0 0% 100% / .08); color: #fff; }
+  .icon-btn.on-dark:hover { background: hsl(0 0% 100% / .18); }
+  .icon-btn.on-dark[aria-pressed="true"] { background: hsl(var(--primary)); border-color: hsl(var(--primary)); color: #fff; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px; border-radius: 999px;
+    background: hsl(var(--muted)); color: hsl(var(--muted-foreground));
+    padding: 3px 10px; font-size: 11.5px; font-weight: 600;
+  }
+  .badge-success { background: hsl(var(--success-bg)); color: hsl(var(--success)); }
+  .badge-warning { background: hsl(var(--warning-bg)); color: hsl(var(--warning)); }
+
+  .field { margin-bottom: 14px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .field-row .field { min-width: 0; }
+  .label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+  .input, textarea.input {
+    width: 100%; min-height: 2.25rem; border: 1px solid hsl(var(--input));
+    border-radius: .5625rem; background: hsl(var(--background)); color: hsl(var(--foreground));
+    padding: .5rem .75rem; font: inherit; font-size: 13.5px;
+  }
+  .input:focus { outline: 2px solid hsl(var(--ring)); outline-offset: -1px; border-color: transparent; }
+  textarea.input { resize: vertical; min-height: 84px; }
+  .hint { color: hsl(var(--muted-foreground)); font-size: 11.5px; margin-top: 5px; }
+
+  .card { border: 1px solid hsl(var(--border)); border-radius: var(--radius); background: hsl(var(--card)); }
+
+  /* ---------- utilidades de layout (mesmas do app.css) ---------- */
+  .row { display: flex; align-items: center; gap: 10px; }
+  .between { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .wrap { flex-wrap: wrap; }
+  .g2 { gap: 8px; } .g3 { gap: 12px; }
+  .muted { color: hsl(var(--muted-foreground)); }
+  .sm { font-size: 12.5px; } .xs { font-size: 11.5px; }
+
+  /* =====================================================
+     GALERIA PÚBLICA
+  ===================================================== */
+  #screen-gallery { background: hsl(var(--background)); }
+  .g-topbar {
+    position: sticky; top: 0; z-index: 30;
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 20px; border-bottom: 1px solid hsl(var(--border));
+    background: hsl(var(--background) / .92); backdrop-filter: blur(10px);
+  }
+  .g-brand { display: flex; align-items: center; gap: 9px; margin-right: auto; min-width: 0; }
+  .g-brand .mark {
+    width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+    background: hsl(var(--primary) / .12); color: hsl(var(--primary));
+    display: grid; place-items: center;
+  }
+  .g-brand .mark svg { width: 16px; height: 16px; stroke-width: 1.9; }
+  .g-brand b { font-size: 13.5px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .g-topbar .btn span.full-label { display: inline; }
+
+  .g-hero {
+    position: relative; height: min(88svh, 680px); min-height: 420px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    color: #fff; background: linear-gradient(135deg, #8a7256, #4f4436 60%, #2b241c);
+  }
+  .g-hero::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, hsl(22 16% 20% / .05) 0%, hsl(18 24% 10% / .82) 100%);
+  }
+  .g-hero-ph {
+    position: absolute; inset: 0; display: none; place-items: center;
+    color: hsl(0 0% 100% / .18);
+  }
+  .g-hero-ph svg { width: 90px; height: 90px; stroke-width: 1.1; }
+  .g-hero-content { position: relative; z-index: 1; padding: 0 24px 44px; max-width: 760px; }
+  .g-pill {
+    display: inline-flex; align-items: center; gap: 7px; border-radius: 999px;
+    background: hsl(0 0% 100% / .14); border: 1px solid hsl(0 0% 100% / .3);
+    padding: 5px 13px; font-size: 12px; font-weight: 600; margin-bottom: 16px;
+  }
+  .g-hero h1 { font-size: clamp(30px, 6vw, 46px); font-weight: 700; letter-spacing: -.02em; line-height: 1.08; }
+  .g-hero-meta { margin-top: 14px; display: flex; gap: 16px; flex-wrap: wrap; font-size: 13.5px; opacity: .92; }
+  .g-hero-meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .g-hero-meta svg { width: 14px; height: 14px; stroke-width: 1.8; }
+  .g-hero-cta { margin-top: 26px; height: 2.5rem; padding: 0 20px; font-size: 13.5px; }
+
+  .g-info { max-width: 860px; margin: 0 auto; padding: 36px 20px 8px; }
+  .g-info-card { padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+  .g-info-card p { color: hsl(var(--muted-foreground)); font-size: 14px; line-height: 1.65; }
+  .g-info-card .g-disclaimer {
+    padding-top: 12px; border-top: 1px solid hsl(var(--border));
+    color: hsl(var(--primary)); font-size: 13px; font-weight: 600;
+  }
+  .g-contact { align-self: flex-start; }
+  .whatsapp-bubble {
+    display: inline-grid; place-items: center; width: 1.35rem; height: 1.35rem;
+    border-radius: 50%; background: #25d366; color: #fff;
+  }
+  .whatsapp-bubble svg { width: .9rem !important; height: .9rem !important; stroke-width: 1.55; }
+
+  .g-3d-wrap { max-width: 1120px; margin: 0 auto; padding: 24px 20px 0; }
+  .g-3d-card {
+    display: grid; grid-template-columns: minmax(220px, .78fr) minmax(0, 1.55fr); gap: 22px;
+    padding: 20px; border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius) * 1.25);
+    background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--surface)));
+  }
+  .g-3d-copy { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 10px; }
+  .g-3d-copy .eyebrow { color: hsl(var(--primary)); }
+  .g-3d-copy h2 { margin-bottom: 0; font-size: clamp(20px, 3vw, 28px); }
+  .g-3d-copy p { margin: 0; color: hsl(var(--muted-foreground)); font-size: 13.5px; line-height: 1.6; }
+  .g-3d-copy .btn { margin-top: 4px; }
+  .g-3d-slot {
+    min-height: 240px; overflow: hidden; position: relative; border: 1px solid hsl(var(--border));
+    border-radius: var(--radius); background: radial-gradient(circle at 50% 35%, hsl(32 22% 31%), hsl(22 19% 16%));
+  }
+  .g-3d-placeholder { min-height: 240px; display: grid; place-items: center; padding: 32px; text-align: center; color: hsl(0 0% 100% / .8); }
+  .g-3d-placeholder svg { width: 46px; height: 46px; margin-bottom: 10px; color: hsl(39 54% 71% / .9); stroke-width: 1.1; }
+  .g-3d-placeholder strong { display: block; font-size: 14px; font-weight: 600; }
+  .g-3d-placeholder span { display: block; margin-top: 5px; color: hsl(0 0% 100% / .62); font-size: 12px; }
+  .g-3d-slot.is-loaded { min-height: 460px; }
+  .g-3d-iframe { display: block; width: 100%; height: 460px; border: 0; background: #171311; }
+
+  @media (max-width: 1080px) {
+    .g-3d-card { grid-template-columns: 1fr; }
+    .g-3d-slot { min-height: 0; aspect-ratio: 16 / 9; }
+    .g-3d-placeholder { min-height: 0; height: 100%; }
+    .g-3d-slot.is-loaded { min-height: 0; }
+    .g-3d-iframe { height: 100%; min-height: 0; }
+  }
+
+  .g-grid-wrap { max-width: 1120px; margin: 0 auto; padding: 40px 20px 24px; }
+  .g-grid-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+  .g-grid-head h2 { font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+  .g-grid-head span { color: hsl(var(--muted-foreground)); font-size: 12.5px; }
+
+  .imgrid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
+  .imgcell {
+    border: 1px solid hsl(var(--border)); border-radius: var(--radius);
+    background: hsl(var(--card)); overflow: hidden; cursor: pointer;
+    transition: border-color 140ms ease, transform 140ms ease;
+  }
+  .imgcell:hover { border-color: hsl(var(--primary) / .5); }
+  .imgcell:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 2px; }
+  .imgbox {
+    aspect-ratio: 4 / 3; display: grid; place-items: center;
+    background: hsl(var(--muted)); color: hsl(0 0% 100% / .55);
+  }
+  .imgbox img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .imgbox svg { width: 30px; height: 30px; stroke-width: 1.3; }
+  .imgcap {
+    display: flex; align-items: center; justify-content: space-between; gap: 6px;
+    border-top: 1px solid hsl(var(--divider)); padding: 9px 11px;
+  }
+  .imgcap strong { font-size: 12.5px; font-weight: 600; }
+  .imgcap .dl-mini {
+    width: 1.75rem; height: 1.75rem; border-radius: 7px; border: 0; background: transparent;
+    color: hsl(var(--muted-foreground)); display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .imgcap .dl-mini:hover { background: hsl(var(--accent)); color: hsl(var(--foreground)); }
+  .imgcap .dl-mini svg { width: 14px; height: 14px; }
+
+  .g-footer { text-align: center; padding: 30px 20px 60px; color: hsl(var(--muted-foreground)); font-size: 11.5px; }
+  .g-footer .mono { letter-spacing: .04em; }
+
+  /* lightbox */
+  #lightbox {
+    position: fixed; inset: 0; z-index: 200; width: 100vw; height: 100dvh;
+    background: hsl(18 22% 7% / .96);
+    display: none; flex-direction: column;
+  }
+  #lightbox.open { display: flex; }
+  body.lightbox-open { overflow: hidden; }
+  .lb-top { position: absolute; inset: 0 0 auto; z-index: 3; display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; color: #fff; background: linear-gradient(180deg, hsl(18 22% 7% / .78), transparent); }
+  .lb-counter { font-family: "Space Mono", monospace; font-size: 12.5px; opacity: .8; }
+  .lb-tools { display: flex; gap: 8px; }
+  .lb-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 0; }
+  .lb-photo {
+    width: 100%; height: 100%; border-radius: 0; background: hsl(22 16% 26%);
+    display: grid; place-items: center; color: hsl(0 0% 100% / .22);
+  }
+  .lb-photo svg { display: none; }
+  .lb-photo img { display: block; width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; }
+  .lb-stage > .icon-btn { position: absolute; z-index: 3; top: 50%; transform: translateY(-50%); }
+  .lb-stage > .icon-btn:first-child { left: 18px; }
+  .lb-stage > .icon-btn:last-child { right: 18px; }
+  .lb-caption { position: absolute; inset: auto 0 14px; z-index: 3; text-align: center; color: #fff; font-size: 13px; padding: 16px 0 8px; opacity: .85; text-shadow: 0 1px 8px #000; pointer-events: none; }
+
+  .toast {
+    position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%) translateY(16px);
+    background: hsl(var(--foreground)); color: hsl(var(--background));
+    padding: 11px 18px; border-radius: 9px; font-size: 13px; max-width: 90vw; text-align: center;
+    opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 300;
+    box-shadow: 0 10px 30px hsl(var(--foreground) / .18);
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* =====================================================
+     PAINEL ADMIN
+  ===================================================== */
+  #screen-admin { min-height: 100svh; background: hsl(var(--surface)); }
+  .admin-login { min-height: 100svh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .login-card { width: 100%; max-width: 360px; padding: 30px 26px; display: flex; flex-direction: column; gap: 4px; }
+  .login-card h1 { font-size: 19px; font-weight: 700; letter-spacing: -.01em; }
+  .login-card p.sub { color: hsl(var(--muted-foreground)); font-size: 12.5px; margin-top: 3px; margin-bottom: 18px; }
+
+  .admin-top {
+    display: flex; align-items: center; gap: 12px; padding: 18px 24px;
+    border-bottom: 1px solid hsl(var(--border)); background: hsl(var(--background));
+  }
+  .admin-top h1 { font-size: 17px; font-weight: 700; letter-spacing: -.01em; margin-right: auto; }
+  .admin-wrap { max-width: 780px; margin: 0 auto; padding: 24px 20px 80px; }
+
+  .frow { display: flex; align-items: center; gap: 14px; border: 1px solid hsl(var(--border)); border-radius: var(--radius); background: hsl(var(--card)); padding: 12px 13px; }
+  .frow + .frow { margin-top: 10px; }
+  .thumb-lg {
+    width: 3rem; height: 3rem; flex: 0 0 auto; border-radius: .625rem;
+    background: hsl(var(--muted)); color: hsl(var(--muted-foreground) / .6);
+    display: grid; place-items: center;
+  }
+  .thumb-lg svg { width: 20px; height: 20px; stroke-width: 1.5; }
+  .cell-copy { min-width: 0; flex: 1; }
+  .cell-copy strong { display: block; font-size: 14px; font-weight: 600; }
+  .cell-copy .addr { color: hsl(var(--muted-foreground)); font-size: 12.5px; margin-top: 1px; }
+  .cell-copy .link { color: hsl(var(--muted-foreground) / .8); font-size: 11.5px; margin-top: 5px; }
+  .hc-actions { display: flex; gap: 7px; flex-shrink: 0; }
+
+  .dropzone {
+    border: 1.5px dashed hsl(var(--input)); border-radius: var(--radius);
+    background: hsl(var(--surface)); padding: 22px; text-align: center; cursor: pointer;
+    transition: all 140ms ease; width: 100%; font: inherit; color: inherit;
+  }
+  .dropzone:hover { border-color: hsl(var(--primary)); background: hsl(var(--primary) / .05); }
+  .dropzone svg { width: 22px; height: 22px; stroke-width: 1.6; color: hsl(var(--muted-foreground)); }
+  .dropzone strong { display: block; font-size: 13px; font-weight: 600; margin-top: 8px; }
+  .dropzone span { color: hsl(var(--muted-foreground)); font-size: 12px; }
+  .upload-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+  .upload-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; border: 1px solid hsl(var(--border)); }
+  .gallery-empty { grid-column: 1 / -1; padding: 42px 20px; text-align: center; color: hsl(var(--muted-foreground)); border: 1px dashed hsl(var(--border)); border-radius: var(--radius); background: hsl(var(--card)); }
+  .panel-hint { color: hsl(var(--muted-foreground)); font-size: 12px; line-height: 1.5; margin: 0 0 16px; }
+  .house-meta { color: hsl(var(--muted-foreground)); font-size: 11.5px; margin-top: 4px; }
+
+  #drawer-scrim { position: fixed; inset: 0; background: hsl(18 22% 8% / .5); z-index: 150; display: none; }
+  #drawer-scrim.open { display: block; }
+  #drawer {
+    position: fixed; top: 0; right: 0; height: 100svh; width: 100%; max-width: 440px;
+    background: hsl(var(--background)); z-index: 160; border-left: 1px solid hsl(var(--border));
+    transform: translateX(100%); transition: transform .22s ease; display: flex; flex-direction: column;
+  }
+  #drawer.open { transform: translateX(0); }
+  .drawer-head { display: flex; align-items: center; padding: 18px 20px; border-bottom: 1px solid hsl(var(--border)); }
+  .drawer-head h2 { font-size: 16px; font-weight: 700; margin-right: auto; }
+  .drawer-body { padding: 20px; overflow-y: auto; flex: 1; }
+  .drawer-foot { padding: 16px 20px; border-top: 1px solid hsl(var(--border)); display: flex; gap: 10px; }
+
+  @media (max-width: 860px) { .imgrid { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+  @media (max-width: 640px) {
+    .imgrid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    body { overflow-x: hidden; }
+    body { font-size: 15px; }
+    .proto-bar { gap: 8px; padding: 10px 14px; }
+    .proto-note { display: none; }
+    .proto-btn { padding: 6px 12px; font-size: 12px; }
+    .g-topbar { gap: 8px; padding: 10px 14px; }
+    .g-brand b { font-size: 14px; }
+    .g-topbar .btn { width: 38px; height: 38px; padding: 0; }
+    .g-topbar .full-label, .g-topbar .btn span.full-label { display: none; }
+    .g-info, .g-grid-wrap, .g-3d-wrap { padding-left: 16px; padding-right: 16px; }
+    .g-hero { height: min(76svh, 590px); min-height: 420px; }
+    .g-hero-content { padding: 0 18px 30px; }
+    .g-hero h1 { font-size: clamp(34px, 10vw, 42px); }
+    .g-hero-meta { gap: 10px 14px; font-size: 14px; }
+    .g-hero-cta { min-height: 2.8rem; margin-top: 22px; font-size: 14px; }
+    .g-info { padding-top: 28px; }
+    .g-info-card { padding: 20px 18px; }
+    .g-info-card p { font-size: 14.5px; }
+    .g-contact { min-height: 2.8rem; font-size: 14px; }
+    .g-3d-card { grid-template-columns: 1fr; gap: 18px; padding: 18px; }
+    .g-3d-copy { gap: 12px; }
+    .g-3d-copy h2 { font-size: 26px; }
+    .g-3d-copy p { font-size: 14px; line-height: 1.65; }
+    .g-3d-copy .btn { min-height: 2.8rem; font-size: 14px; }
+    .g-3d-slot, .g-3d-placeholder { min-height: 360px; aspect-ratio: auto; }
+    .g-3d-iframe { height: min(72svh, 420px); min-height: 360px; }
+    .g-grid-wrap { padding-top: 34px; }
+    .g-grid-head { margin-bottom: 14px; }
+    .g-grid-head h2 { font-size: 19px; }
+    .g-grid-head span { font-size: 13px; }
+    .imgrid { gap: 10px; }
+    .imgcap { padding: 10px; }
+    .imgcap strong { font-size: 13px; }
+    .frow { flex-wrap: wrap; }
+    .field-row { grid-template-columns: 1fr; gap: 0; }
+  }
+
+  /* =====================================================
+     LINKTREE
+  ===================================================== */
+  #screen-linktree {
+    min-height: 100svh; display: flex; align-items: center; justify-content: center;
+    padding: 48px 20px; background: hsl(var(--surface));
+  }
+  .lt-frame { width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center; }
+  .lt-mark {
+    width: 60px; height: 60px; border-radius: 16px;
+    background: hsl(var(--primary) / .12); color: hsl(var(--primary));
+    display: grid; place-items: center;
+  }
+  .lt-mark svg { width: 28px; height: 28px; stroke-width: 1.6; }
+  .lt-eyebrow {
+    display: inline-flex; margin: 0 auto 10px; font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: hsl(var(--muted-foreground));
+  }
+  .lt-title { font-size: 26px; font-weight: 700; letter-spacing: -.01em; }
+  .lt-addr { margin-top: 6px; color: hsl(var(--muted-foreground)); font-size: 13.5px; }
+  .lt-links { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+  .lt-link {
+    width: 100%; height: 3rem; border-radius: .625rem; text-decoration: none;
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    font-size: 14.5px; font-weight: 600; border: 1px solid hsl(var(--border));
+    background: hsl(var(--background)); color: hsl(var(--foreground)); transition: background 140ms ease;
+  }
+  .lt-link:hover { background: hsl(var(--accent)); }
+  .lt-link.primary { border-color: hsl(var(--primary)); background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+  .lt-link.primary:hover { background: hsl(var(--primary) / .9); }
+  .lt-link svg { width: 17px; height: 17px; }
+  .lt-foot { margin-top: 4px; color: hsl(var(--muted-foreground) / .8); font-size: 11.5px; }
+
+  @media (max-width: 640px) {
+    /* Em telas altas, centralizar deixava o Linktree muito distante e pequeno.
+       A pilha começa mais acima e usa alvos de toque mais confortáveis. */
+    #screen-linktree { align-items: flex-start; padding: clamp(52px, 10vh, 96px) 18px 36px; }
+    .lt-frame { max-width: 360px; gap: 18px; }
+    .lt-mark { width: 72px; height: 72px; }
+    .lt-mark svg { width: 32px; height: 32px; }
+    .lt-eyebrow { font-size: 12px; margin-bottom: 12px; }
+    .lt-title { font-size: 30px; }
+    .lt-addr { font-size: 14.5px; }
+    .lt-links { gap: 12px; margin-top: 10px; }
+    .lt-link { height: 3.35rem; font-size: 15.5px; }
+    .lt-foot { margin-top: 6px; font-size: 12px; }
+  }
+</style>
+
+</head>
+<body>
+
+<a class="skip-link" href="#gallery-grid-anchor">Pular para a galeria de fotos</a>
+
+<div class="proto-bar">
+  <strong>Protótipo · revisão</strong>
+  <button class="proto-btn" data-screen="linktree" aria-pressed="true">Linktree</button>
+  <button class="proto-btn" data-screen="gallery" aria-pressed="false">Galeria da casa</button>
+  <button class="proto-btn locked" data-screen="admin" aria-pressed="false">Painel do Bruno <span class="proto-lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span></button>
+  <span class="proto-note">O cliente nunca vê o "Painel do Bruno" — não existe nenhum link pra ele nem na galeria nem no linktree. Na versão final fica num endereço separado e com senha, fora do alcance de quem escaneia o QR code.</span>
+</div>
+
+<!-- ============ LINKTREE ============ -->
+<section id="screen-linktree" class="screen active" aria-label="Linktree">
+  <div class="lt-frame">
+    <div class="lt-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+    </div>
+    <div>
+      <span class="lt-eyebrow">Casas à Venda</span>
+      <h1 class="lt-title" id="lt-house-title">Casa Feitoria</h1>
+      <p class="lt-addr" id="lt-house-meta">Feitoria · São Leopoldo/RS · Quiosque privativo · 69,81 m²</p>
+    </div>
+    <div class="lt-links">
+      <a href="#" class="lt-link primary" data-action="goto-gallery">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        Ver galeria de fotos
+      </a>
+      <a href="https://wa.me/5551982472740?text=Ol%C3%A1%2C%20Cl%C3%A9ber%21%20Tenho%20interesse%20na%20Casa%20Feitoria%2C%20em%20Feitoria%2C%20S%C3%A3o%20Leopoldo%2FRS%2C%20e%20gostaria%20de%20receber%20mais%20informa%C3%A7%C3%B5es%20e%20agendar%20uma%20visita.%20Pode%20me%20ajudar%3F" class="lt-link" data-house-whatsapp>
+        <span class="whatsapp-bubble" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.5 11.7a8.5 8.5 0 0 1-12.4 7.5L4 20.5l1.3-3.8A8.5 8.5 0 1 1 20.5 11.7Z"/><path d="M8.5 8.7c.2-.4.5-.4.8-.4h.5c.2 0 .4.1.5.4l.7 1.7c.1.2 0 .5-.2.7l-.6.6c.6 1.2 1.6 2.2 2.8 2.8l.6-.6c.2-.2.5-.3.7-.2l1.7.7c.3.1.4.3.4.5v.5c0 .3-.1.6-.4.8-.4.3-1 .4-1.5.2-2.7-.8-5.1-3.2-5.9-5.9-.2-.5-.1-1.1.2-1.5Z"/></svg></span>
+        Fale com o nosso corretor
+      </a>
+    </div>
+    <p class="lt-foot">Imagens meramente ilustrativas · imóvel entregue sem móveis</p>
+  </div>
+</section>
+
+<!-- ============ GALERIA PÚBLICA ============ -->
+<section id="screen-gallery" class="screen" aria-label="Galeria pública da casa">
+  <div class="g-topbar">
+    <div class="g-brand">
+      <div class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+      </div>
+      <b id="g-nav-house-title">Casa Feitoria</b>
+    </div>
+    <button class="btn" data-action="toast" data-msg="Compartilhar: em produção copia o link desta galeria.">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.7 7.6-4.4M8.2 13.3l7.6 4.4"/></svg>
+      <span class="full-label">Compartilhar</span>
+    </button>
+    <button class="btn" data-action="open-lightbox" data-index="0" data-autoplay="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+      <span class="full-label">Apresentação</span>
+    </button>
+    <button class="btn btn-primary" data-action="toast" data-msg="Baixar tudo: em produção gera um .zip com as fotos.">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+      <span class="full-label">Baixar tudo</span>
+    </button>
+  </div>
+
+  <div class="g-hero" style="background-image: linear-gradient(180deg, hsl(22 16% 20% / .05) 0%, hsl(18 24% 10% / .82) 100%), url('./fotos/10.jpeg'); background-size: cover; background-position: center;">
+    <div class="g-hero-ph" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+    </div>
+    <div class="g-hero-content">
+      <span class="g-pill">Fotos meramente ilustrativas</span>
+      <h1 id="g-hero-house-title">Casa Feitoria</h1>
+      <div class="g-hero-meta">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 10c0 4.99-5.1 9.6-7.2 11.3a1.2 1.2 0 0 1-1.6 0C9.1 19.6 4 15 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg> <span id="g-house-location">Feitoria, São Leopoldo/RS</span></span>
+        <span id="g-house-rooms">2 quartos</span>
+        <span id="g-house-area">69,81 m²</span>
+        <span id="g-house-highlight">Quiosque privativo</span>
+      </div>
+      <button class="btn btn-primary g-hero-cta" data-action="scroll-to" data-target="gallery-grid-anchor">
+        Ver fotos ilustrativas
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="g-info">
+    <div class="card g-info-card">
+      <p id="g-house-description">Casa térrea, 2 quartos, cozinha integrada e quiosque privativo com churrasqueira. Todas as imagens desta galeria são meramente ilustrativas e representam apenas o padrão de acabamento proposto.</p>
+      <p class="g-disclaimer">Importante: as imagens são meramente ilustrativas. A casa será entregue sem móveis; a decoração apresentada não faz parte da entrega.</p>
+      <a href="https://wa.me/5551982472740?text=Ol%C3%A1%2C%20Cl%C3%A9ber%21%20Tenho%20interesse%20na%20Casa%20Feitoria%2C%20em%20Feitoria%2C%20S%C3%A3o%20Leopoldo%2FRS%2C%20e%20gostaria%20de%20receber%20mais%20informa%C3%A7%C3%B5es%20e%20agendar%20uma%20visita.%20Pode%20me%20ajudar%3F" class="btn btn-primary g-contact" data-house-whatsapp>
+        <span class="whatsapp-bubble" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.5 11.7a8.5 8.5 0 0 1-12.4 7.5L4 20.5l1.3-3.8A8.5 8.5 0 1 1 20.5 11.7Z"/><path d="M8.5 8.7c.2-.4.5-.4.8-.4h.5c.2 0 .4.1.5.4l.7 1.7c.1.2 0 .5-.2.7l-.6.6c.6 1.2 1.6 2.2 2.8 2.8l.6-.6c.2-.2.5-.3.7-.2l1.7.7c.3.1.4.3.4.5v.5c0 .3-.1.6-.4.8-.4.3-1 .4-1.5.2-2.7-.8-5.1-3.2-5.9-5.9-.2-.5-.1-1.1.2-1.5Z"/></svg></span>
+        Fale com o nosso corretor
+      </a>
+    </div>
+  </div>
+
+  <section class="g-3d-wrap" id="gallery-3d" aria-labelledby="gallery-3d-title">
+    <div class="g-3d-card">
+      <div class="g-3d-copy">
+        <span class="eyebrow">MODELO INTERATIVO</span>
+        <h2 id="gallery-3d-title">Explore a casa em 3D</h2>
+        <p>Gire o modelo, aproxime e veja o terreno e as proporções da casa. O modelo abre aqui na galeria, sem trocar de página.</p>
+        <button class="btn btn-primary" type="button" data-action="open-3d">Abrir experiência 3D</button>
+      </div>
+      <div class="g-3d-slot" id="gallery-3d-slot" data-showroom-url="http://localhost:5173/?embed=1">
+        <div class="g-3d-placeholder" id="gallery-3d-placeholder">
+          <div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/><path d="m3 9 9 7 9-7"/></svg>
+            <strong id="g-3d-house-title">Modelo 3D da Casa Feitoria</strong>
+            <span>Carregamento sob demanda para manter a galeria leve.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="gallery-grid-anchor"></div>
+  <div class="g-grid-wrap">
+    <div class="g-grid-head">
+      <h2>Fotos ilustrativas da casa</h2>
+      <span id="grid-count"></span>
+    </div>
+    <div class="imgrid" id="gallery-grid"></div>
+  </div>
+
+  <p class="g-footer">IMAGENS MERAMENTE ILUSTRATIVAS <span class="mono">·</span> CASA ENTREGUE SEM MÓVEIS</p>
+</section>
+
+<!-- lightbox -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Visualizador de fotos">
+  <div class="lb-top">
+    <span class="lb-counter" id="lb-counter">1 / 12</span>
+    <div class="lb-tools">
+      <button class="icon-btn on-dark" id="lb-play" data-action="toggle-slideshow" aria-pressed="false" aria-label="Apresentação automática">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+      </button>
+      <button class="icon-btn on-dark" data-action="toast" data-msg="Download desta foto: em produção baixa o arquivo original." aria-label="Baixar esta foto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+      </button>
+      <button class="icon-btn on-dark" id="lb-close" data-action="close-lightbox" aria-label="Fechar visualizador">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m5 5 14 14M19 5 5 19"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="lb-stage">
+    <button class="icon-btn on-dark" data-action="step-lightbox" data-dir="-1" aria-label="Foto anterior">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <div class="lb-photo" id="lb-photo" aria-hidden="true">
+      <img id="lb-image" alt="">
+    </div>
+    <button class="icon-btn on-dark" data-action="step-lightbox" data-dir="1" aria-label="Próxima foto">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  </div>
+  <p class="lb-caption" id="lb-caption">Fachada</p>
+</div>
+
+<!-- ============ PAINEL ADMIN ============ -->
+<section id="screen-admin" class="screen" aria-label="Painel do Bruno">
+  <div class="admin-login" id="admin-login">
+    <div class="card login-card">
+      <h1>Painel do Bruno</h1>
+      <p class="sub">Demonstração do painel — a autenticação real entra na versão publicada.</p>
+      <div class="field"><label class="label" for="login-email">E-mail</label><input class="input" id="login-email" type="text" placeholder="bruno@exemplo.com"></div>
+      <div class="field" style="margin-bottom:20px"><label class="label" for="login-pass">Senha</label><input class="input" id="login-pass" type="password" placeholder="••••••••"></div>
+      <button class="btn btn-primary" style="width:100%" data-action="do-login">Entrar</button>
+    </div>
+  </div>
+
+  <div id="admin-shell" style="display:none">
+    <div class="admin-top">
+      <h1>Minhas casas</h1>
+      <button class="btn btn-primary" data-action="open-drawer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>
+        Nova casa
+      </button>
+    </div>
+    <div class="admin-wrap">
+      <p class="panel-hint">Cada casa tem seus próprios dados, endereço permanente e link para o QR code. Se o QR já foi impresso, mantenha o identificador do endereço.</p>
+      <div id="house-list"></div>
+    </div>
+  </div>
+</section>
+
+<div id="drawer-scrim" data-action="close-drawer"></div>
+<div id="drawer" role="dialog" aria-modal="true" aria-label="Nova casa">
+  <div class="drawer-head">
+    <h2 id="drawer-title">Nova casa</h2>
+    <button class="icon-btn" data-action="close-drawer" aria-label="Fechar formulário">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m5 5 14 14M19 5 5 19"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body">
+    <div class="field"><label class="label" for="f-title">Título da casa</label><input class="input" id="f-title" type="text" placeholder="Ex: Casa Recanto do Bosque"></div>
+    <div class="field"><label class="label" for="f-addr">Endereço / bairro / cidade</label><input class="input" id="f-addr" type="text" placeholder="Ex: Feitoria, São Leopoldo/RS"></div>
+    <div class="field-row">
+      <div class="field"><label class="label" for="f-area">Área</label><input class="input" id="f-area" type="text" placeholder="Ex: 69,81 m²"></div>
+      <div class="field"><label class="label" for="f-rooms">Quartos</label><input class="input" id="f-rooms" type="text" placeholder="Ex: 2 quartos"></div>
+    </div>
+    <div class="field"><label class="label" for="f-highlight">Destaque principal</label><input class="input" id="f-highlight" type="text" placeholder="Ex: Quiosque privativo com churrasqueira"></div>
+    <div class="field"><label class="label" for="f-desc">Descrição</label><textarea class="input" id="f-desc" placeholder="Metragem, quartos, diferenciais..."></textarea></div>
+    <div class="field"><label class="label" for="f-phone">WhatsApp de contato</label><input class="input" id="f-phone" type="text" placeholder="(51) 98247-2740"></div>
+    <div class="field"><label class="label" for="f-slug">Identificador do endereço</label><input class="input" id="f-slug" type="text" placeholder="casa-feitoria"><p class="hint">Esse identificador vira o caminho do QR code. Depois de imprimir, não altere.</p></div>
+    <div class="field"><label class="label" for="f-status">Status</label><select class="input" id="f-status"><option value="ok">Publicada</option><option value="draft">Rascunho</option></select></div>
+    <div class="field" style="margin-bottom:0">
+      <label class="label" id="upload-label">Fotos</label>
+      <button type="button" class="dropzone" data-action="open-file-picker" aria-describedby="upload-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg>
+        <strong>Arraste as fotos aqui</strong>
+        <span>ou clique para selecionar</span>
+      </button>
+      <input type="file" id="f-upload" accept="image/*" multiple style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">
+      <p class="hint">Prévia local neste protótipo. Na publicação final, as fotos serão organizadas nos arquivos da casa.</p>
+      <div class="upload-grid" id="upload-preview"></div>
+    </div>
+  </div>
+  <div class="drawer-foot">
+    <button class="btn" style="flex:1" data-action="close-drawer">Cancelar</button>
+    <button class="btn btn-primary" style="flex:1" data-action="save-house"><span id="save-house-label">Publicar casa</span></button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  /* ---------- despacho central de ações (nada de onclick inline —
+     o visualizador de Artifacts bloqueia atributos de evento inline
+     por CSP; só addEventListener funciona). ---------- */
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  const actions = {
+    'goto-gallery': () => showScreen('gallery'),
+    'toast': (el) => showToast(el.dataset.msg),
+    'scroll-to': (el) => document.getElementById(el.dataset.target).scrollIntoView({ behavior: 'smooth' }),
+    'open-3d': () => openShowroom3D(),
+    'open-lightbox': (el) => openLightbox(Number(el.dataset.index), el.dataset.autoplay === 'true'),
+    'close-lightbox': () => closeLightbox(),
+    'toggle-slideshow': () => toggleSlideshow(),
+    'step-lightbox': (el) => stepLightbox(Number(el.dataset.dir)),
+    'do-login': () => doLogin(),
+    'open-drawer': () => openDrawer(),
+    'close-drawer': () => closeDrawer(),
+    'save-house': () => saveHouse(),
+    'open-file-picker': () => document.getElementById('f-upload').click(),
+    'copy-link': (el) => copyHouseLink(el),
+    'preview-house': (el) => previewHouse(el.dataset.id),
+    'edit-house': (el) => openHouseEditor(el.dataset.id),
+  };
+
+  function dispatch(el) {
+    const action = actions[el.dataset.action];
+    if (action) action(el);
+  }
+
+  document.addEventListener('click', (e) => {
+    const el = e.target.closest('[data-action]');
+    if (!el) return;
+    if (el.tagName === 'A') e.preventDefault();
+    dispatch(el);
+  });
+  /* elementos com role="button" (a grade de fotos) não ativam com Enter/Espaço
+     nativamente como <button> — tratamos aqui. */
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const el = e.target.closest('[role="button"][data-action]');
+    if (!el) return;
+    e.preventDefault();
+    dispatch(el);
+  });
+
+  /* ---------- seletor de tela do protótipo ---------- */
+  function showScreen(name) {
+    document.querySelectorAll('.proto-btn').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.screen === name)));
+    document.querySelectorAll('.screen').forEach(s => {
+      const isTarget = s.id === 'screen-' + name;
+      s.classList.toggle('active', isTarget);
+      // reforça o estado direto no estilo — não depende só da classe/CSS,
+      // então sobrevive a qualquer cache de versão antiga do script.
+      s.style.display = isTarget ? 'block' : 'none';
+    });
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll('.proto-btn').forEach(btn => {
+    btn.addEventListener('click', () => showScreen(btn.dataset.screen));
+  });
+
+  let showroomFrame = null;
+  function openShowroom3D() {
+    const slot = document.getElementById('gallery-3d-slot');
+    const placeholder = document.getElementById('gallery-3d-placeholder');
+    if (!showroomFrame) {
+      showroomFrame = document.createElement('iframe');
+      showroomFrame.className = 'g-3d-iframe';
+      showroomFrame.title = 'Showroom 3D da Casa Feitoria';
+      showroomFrame.loading = 'lazy';
+      const hostAtual = window.location.hostname;
+      showroomFrame.src = hostAtual
+        ? `${window.location.protocol}//${hostAtual}:5173/?embed=1`
+        : slot.dataset.showroomUrl || '/showroom3d/index.html?embed=1';
+      showroomFrame.addEventListener('load', () => showToast('Showroom 3D carregado. Arraste o modelo para explorar.'));
+      showroomFrame.addEventListener('error', () => showToast('Não foi possível carregar o showroom 3D. Verifique se o servidor está ativo.'));
+      slot.appendChild(showroomFrame);
+      slot.classList.add('is-loaded');
+      placeholder.hidden = true;
+    }
+    showroomFrame.focus({ preventScroll: true });
+    slot.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  const houseSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>';
+  const photoEntries = [
+    { file: '03.jpeg', label: 'Sala de estar' },
+    { file: '06.jpeg', label: 'Sala de estar' },
+    { file: '05.jpeg', label: 'Sala/cozinha' },
+    { file: '04.jpeg', label: 'Cozinha' },
+    { file: '07.jpeg', label: 'Quarto 1' },
+    { file: '01.jpeg', label: 'Quarto 1' },
+    { file: '08.jpeg', label: 'Quarto 2' },
+    { file: '09.jpeg', label: 'Quarto 2' },
+    { file: '02.jpeg', label: 'Banheiro' },
+  ];
+  let photoUrls = photoEntries.map(({ file }) => './fotos/' + file);
+  let rooms = photoEntries.map(({ label }) => label);
+  const palette = [
+    "#8a7256,#4f4436","#6f7a63,#3c4636","#7a6a52,#40372a","#5c6b6a,#2f3a39",
+    "#8c7a5a,#4a3f2c","#6a5c4e,#332a20","#7d8571,#454a3a","#8a6f52,#463726",
+    "#5f6c5e,#303930","#907a56,#4c3d26","#6b7268,#383c35","#836f5c,#453a2e"
+  ];
+  function photoGradient(i) { return 'linear-gradient(150deg, ' + palette[i % palette.length] + ')'; }
+
+  function gridCellHTML(i) {
+    return '<div class="imgcell" tabindex="0" role="button" aria-label="Ver foto: ' + rooms[i % rooms.length] + '" data-action="open-lightbox" data-index="' + i + '">' +
+      '<div class="imgbox"><img src="' + photoUrls[i % photoUrls.length] + '" alt="" loading="lazy"></div>' +
+      '<div class="imgcap"><strong>' + rooms[i % rooms.length] + '</strong>' +
+      '<button class="dl-mini" aria-label="Baixar foto: ' + rooms[i % rooms.length] + '" data-action="toast" data-msg="Download desta foto: em produção baixa o arquivo original.">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg></button></div></div>';
+  }
+  function renderGalleryGrid() {
+    const grid = document.getElementById('gallery-grid');
+    grid.innerHTML = rooms.length
+      ? rooms.map((_, i) => gridCellHTML(i)).join('')
+      : '<div class="gallery-empty">Ainda não há fotos cadastradas para esta casa.</div>';
+    document.getElementById('grid-count').textContent = rooms.length + ' fotos';
+  }
+  function applyPhotoEntries(entries) {
+    const safeEntries = Array.isArray(entries) ? entries : [];
+    photoUrls = safeEntries.map(entry => entry.url || ('./fotos/' + entry.file));
+    rooms = safeEntries.map(entry => entry.label || 'Ambiente não informado');
+    renderGalleryGrid();
+  }
+  renderGalleryGrid();
+
+  /* ---------- lightbox ---------- */
+  let lbIndex = 0, slideshowTimer = null, lastFocused = null;
+  function openLightbox(i, autoplay) {
+    if (!rooms.length) { showToast('Esta casa ainda não tem fotos cadastradas.'); return; }
+    lastFocused = document.activeElement;
+    lbIndex = i; renderLightbox();
+    document.getElementById('lightbox').classList.add('open');
+    document.body.classList.add('lightbox-open');
+    document.getElementById('lb-close').focus();
+    if (autoplay) startSlideshow();
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.classList.remove('lightbox-open');
+    stopSlideshow();
+    if (lastFocused) lastFocused.focus();
+  }
+  function stepLightbox(d) { lbIndex = (lbIndex + d + rooms.length) % rooms.length; renderLightbox(); }
+  function renderLightbox() {
+    document.getElementById('lb-counter').textContent = (lbIndex + 1) + ' / ' + rooms.length;
+    document.getElementById('lb-caption').textContent = rooms[lbIndex % rooms.length];
+    const image = document.getElementById('lb-image');
+    image.src = photoUrls[lbIndex % photoUrls.length];
+    image.alt = rooms[lbIndex % rooms.length];
+    document.getElementById('lb-photo').style.background = 'hsl(22 16% 26%)';
+  }
+  function toggleSlideshow() { slideshowTimer ? stopSlideshow() : startSlideshow(); }
+  function startSlideshow() {
+    stopSlideshow();
+    slideshowTimer = setInterval(() => stepLightbox(1), 2400);
+    document.getElementById('lb-play').setAttribute('aria-pressed', 'true');
+  }
+  function stopSlideshow() {
+    clearInterval(slideshowTimer); slideshowTimer = null;
+    document.getElementById('lb-play').setAttribute('aria-pressed', 'false');
+  }
+  document.addEventListener('keydown', (e) => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'ArrowRight') stepLightbox(1);
+    if (e.key === 'ArrowLeft') stepLightbox(-1);
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  /* ---------- toast ---------- */
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  }
+
+  /* ---------- admin ---------- */
+  const housesStorageKey = 'casasavenda.mockup.houses.v1';
+  const siteBaseUrl = 'https://casasavenda.github.io';
+
+  const defaultHouses = [{
+    id: 'casa-feitoria',
+    title: 'Casa Feitoria',
+    addr: 'Feitoria, São Leopoldo/RS',
+    area: '69,81 m²',
+    rooms: '2 quartos',
+    highlight: 'Quiosque privativo com churrasqueira',
+    description: 'Casa térrea, 2 quartos, cozinha integrada e quiosque privativo com churrasqueira. As imagens desta galeria são meramente ilustrativas e representam apenas o padrão de acabamento proposto. A casa é entregue sem móveis.',
+    phone: '5551982472740',
+    status: 'ok',
+    slug: 'casa-feitoria',
+    photos: photoEntries,
+  }];
+
+  function cloneHouse(house) {
+    return { ...house, photos: Array.isArray(house.photos) ? house.photos.map(photo => ({ ...photo })) : [] };
+  }
+
+  function loadHouses() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(housesStorageKey));
+      if (Array.isArray(saved)) return saved.map(cloneHouse);
+    } catch (error) {
+      console.warn('Não foi possível carregar as casas salvas nesta prévia.', error);
+    }
+    return defaultHouses.map(cloneHouse);
+  }
+
+  function persistHouses() {
+    try {
+      localStorage.setItem(housesStorageKey, JSON.stringify(houses));
+      return true;
+    } catch (error) {
+      console.warn('Não foi possível salvar as casas nesta prévia.', error);
+      return false;
+    }
+  }
+
+  function slugify(value) {
+    return String(value || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '') || 'nova-casa';
+  }
+
+  function normalizePhone(value) {
+    const digits = String(value || '').replace(/\D/g, '');
+    if (!digits) return '';
+    return digits.startsWith('55') ? digits : '55' + digits;
+  }
+
+  function formatPhone(value) {
+    const digits = normalizePhone(value);
+    if (digits.length === 13) return '(' + digits.slice(2, 4) + ') ' + digits.slice(4, 9) + '-' + digits.slice(9);
+    return value || '';
+  }
+
+  function houseLink(house) {
+    return siteBaseUrl + '/casas/' + encodeURIComponent(house.slug || slugify(house.title)) + '/';
+  }
+
+  function whatsappMessage(house) {
+    return 'Olá, Cléber! Tenho interesse na ' + (house.title || 'casa') + ', em ' + (house.addr || 'seu endereço') + ', e gostaria de receber mais informações e agendar uma visita. Pode me ajudar?';
+  }
+
+  function whatsappLink(house) {
+    const phone = normalizePhone(house.phone);
+    return phone ? 'https://wa.me/' + phone + '?text=' + encodeURIComponent(whatsappMessage(house)) : '';
+  }
+
+  function renderPublicHouse(house) {
+    if (!house) return;
+    const meta = [house.addr, house.highlight, house.area].filter(Boolean).join(' · ');
+    const titleNodes = ['lt-house-title', 'g-nav-house-title', 'g-hero-house-title'];
+    titleNodes.forEach(id => { document.getElementById(id).textContent = house.title || 'Casa'; });
+    document.getElementById('lt-house-meta').textContent = meta || 'Consulte os detalhes da casa';
+    document.getElementById('g-house-location').textContent = house.addr || 'Endereço não informado';
+    document.getElementById('g-house-rooms').textContent = house.rooms || 'Quartos não informados';
+    document.getElementById('g-house-area').textContent = house.area || 'Área não informada';
+    document.getElementById('g-house-highlight').textContent = house.highlight || 'Detalhes em breve';
+    document.getElementById('g-house-description').textContent = house.description || 'Descrição da casa em atualização.';
+    document.getElementById('g-3d-house-title').textContent = 'Modelo 3D da ' + (house.title || 'casa');
+    document.title = (house.title || 'Casa') + ' — Casas à Venda';
+    document.querySelectorAll('[data-house-whatsapp]').forEach(anchor => {
+      const link = whatsappLink(house);
+      if (link) {
+        anchor.href = link;
+        anchor.removeAttribute('data-action');
+        anchor.removeAttribute('data-msg');
+      } else {
+        anchor.href = '#';
+        anchor.dataset.action = 'toast';
+        anchor.dataset.msg = 'Cadastre um número de WhatsApp para esta casa.';
+      }
+    });
+    applyPhotoEntries(house.photos || []);
+    if (showroomFrame) showroomFrame.title = 'Showroom 3D da ' + (house.title || 'casa');
+  }
+
+  function doLogin() {
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-shell').style.display = 'block';
+    renderHouseList();
+  }
+
+  let houses = loadHouses();
+  let activeHouseId = houses[0] ? houses[0].id : null;
+  let editingHouseId = null;
+
+  function renderHouseList() {
+    const list = document.getElementById('house-list');
+    if (!houses.length) {
+      list.innerHTML = '<div class="card" style="padding:24px;text-align:center"><strong>Nenhuma casa cadastrada</strong><p class="hint">Adicione a primeira casa para gerar um identificador e organizar a página dela.</p></div>';
+      return;
+    }
+    list.innerHTML = houses.map(h => `
+      <div class="frow">
+        <div class="thumb-lg" aria-hidden="true">${houseSvg}</div>
+        <div class="cell-copy">
+          <strong>${esc(h.title)}</strong>
+          <div class="addr">${esc(h.addr)}</div>
+          <div class="house-meta">${esc([h.rooms, h.area].filter(Boolean).join(' · ') || 'Detalhes não informados')}</div>
+          <div class="link mono">casasavenda.github.io/casas/${esc(h.slug)}/</div>
+        </div>
+        <span class="badge ${h.status === 'ok' ? 'badge-success' : 'badge-warning'}">${h.status === 'ok' ? 'Publicada' : 'Rascunho'}</span>
+        <div class="hc-actions">
+          <button class="icon-btn" aria-label="Pré-visualizar ${esc(h.title)}" data-action="preview-house" data-id="${esc(h.id)}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+          </button>
+          <button class="icon-btn" aria-label="Copiar link do QR code de ${esc(h.title)}" data-action="copy-link" data-id="${esc(h.id)}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          </button>
+          <button class="icon-btn" aria-label="Editar ${esc(h.title)}" data-action="edit-house" data-id="${esc(h.id)}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function previewHouse(id) {
+    const house = houses.find(item => item.id === id);
+    if (!house) return;
+    activeHouseId = house.id;
+    renderPublicHouse(house);
+    showScreen('gallery');
+    showToast('Prévia atualizada para ' + house.title + '.');
+  }
+
+  function copyHouseLink(el) {
+    const house = houses.find(item => item.id === el.dataset.id);
+    if (!house) return;
+    const link = houseLink(house);
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(link)
+        .then(() => showToast('Link copiado: ' + link))
+        .catch(() => showToast('Link da casa: ' + link));
+    } else {
+      showToast('Link da casa: ' + link);
+    }
+  }
+
+  function clearUploadedPreview() {
+    uploaded.forEach(url => URL.revokeObjectURL(url));
+    uploaded = [];
+    document.getElementById('f-upload').value = '';
+    document.getElementById('upload-preview').innerHTML = '';
+  }
+
+  function renderUploadPreview(entries) {
+    const safeEntries = Array.isArray(entries) ? entries : [];
+    document.getElementById('upload-preview').innerHTML = safeEntries.map(entry => {
+      const src = typeof entry === 'string' ? entry : (entry.url || ('./fotos/' + entry.file));
+      return '<img src="' + esc(src) + '" alt="' + esc(typeof entry === 'string' ? 'Foto selecionada' : (entry.label || 'Foto da casa')) + '">';
+    }).join('');
+  }
+
+  function clearHouseForm() {
+    ['f-title', 'f-addr', 'f-area', 'f-rooms', 'f-highlight', 'f-desc', 'f-phone', 'f-slug'].forEach(id => { document.getElementById(id).value = ''; });
+    document.getElementById('f-status').value = 'draft';
+    clearUploadedPreview();
+  }
+
+  function fillHouseForm(house) {
+    document.getElementById('f-title').value = house.title || '';
+    document.getElementById('f-addr').value = house.addr || '';
+    document.getElementById('f-area').value = house.area || '';
+    document.getElementById('f-rooms').value = house.rooms || '';
+    document.getElementById('f-highlight').value = house.highlight || '';
+    document.getElementById('f-desc').value = house.description || '';
+    document.getElementById('f-phone').value = formatPhone(house.phone);
+    document.getElementById('f-slug').value = house.slug || '';
+    document.getElementById('f-status').value = house.status || 'draft';
+    renderUploadPreview(house.photos || []);
+  }
+
+  function openDrawer(houseId) {
+    editingHouseId = houseId || null;
+    const house = editingHouseId ? houses.find(item => item.id === editingHouseId) : null;
+    if (house) fillHouseForm(house); else { clearHouseForm(); document.getElementById('f-title').focus(); }
+    document.getElementById('drawer-title').textContent = house ? 'Editar casa' : 'Nova casa';
+    document.getElementById('save-house-label').textContent = house ? 'Salvar alterações' : 'Adicionar casa';
+    document.getElementById('drawer').setAttribute('aria-label', house ? 'Editar casa' : 'Nova casa');
+    document.getElementById('drawer-scrim').classList.add('open');
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('f-title').focus();
+  }
+
+  function openHouseEditor(id) {
+    openDrawer(id);
+  }
+
+  function closeDrawer() {
+    document.getElementById('drawer-scrim').classList.remove('open');
+    document.getElementById('drawer').classList.remove('open');
+  }
+
+  let uploaded = [];
+  document.getElementById('f-upload').addEventListener('change', (e) => {
+    Array.from(e.target.files).forEach(file => uploaded.push(URL.createObjectURL(file)));
+    renderUploadPreview(uploaded);
+  });
+
+  function saveHouse() {
+    const existing = houses.find(item => item.id === editingHouseId);
+    const title = document.getElementById('f-title').value.trim() || 'Nova casa';
+    const addr = document.getElementById('f-addr').value.trim() || 'Endereço não informado';
+    const slug = slugify(document.getElementById('f-slug').value.trim() || title);
+    const slugInUse = houses.some(item => item.slug === slug && item.id !== editingHouseId);
+    if (slugInUse) {
+      showToast('Esse identificador já está em uso. Escolha outro para manter cada QR code separado.');
+      return;
+    }
+    const savedHouse = {
+      ...(existing || {}),
+      id: existing ? existing.id : 'house-' + Date.now(),
+      title,
+      addr,
+      area: document.getElementById('f-area').value.trim(),
+      rooms: document.getElementById('f-rooms').value.trim(),
+      highlight: document.getElementById('f-highlight').value.trim(),
+      description: document.getElementById('f-desc').value.trim(),
+      phone: normalizePhone(document.getElementById('f-phone').value.trim()),
+      slug,
+      status: document.getElementById('f-status').value,
+      photos: existing && Array.isArray(existing.photos) ? existing.photos : [],
+    };
+    houses = existing
+      ? houses.map(item => item.id === existing.id ? savedHouse : item)
+      : [savedHouse, ...houses];
+    activeHouseId = savedHouse.id;
+    const editing = Boolean(existing);
+    const persisted = persistHouses();
+    renderHouseList();
+    renderPublicHouse(savedHouse);
+    closeDrawer();
+    clearHouseForm();
+    editingHouseId = null;
+    showToast((editing ? 'Alterações salvas' : 'Casa adicionada') + (persisted ? ' nesta prévia.' : '. O navegador não permitiu salvar localmente.'));
+  }
+
+  renderHouseList();
+  renderPublicHouse(houses.find(item => item.id === activeHouseId));
+</script>
+</body>
+</html>
