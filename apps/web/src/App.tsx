@@ -8,5 +8,5 @@ const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 30
 
 export function App() {
   const adminEnabled = import.meta.env.DEV;
-  return <QueryClientProvider client={queryClient}><HashRouter><Routes><Route path="/" element={<LinkTreePage />} /><Route path="/casas/:slug" element={<GalleryPage />} />{adminEnabled && <Route path="/admin" element={<AdminPage />} />}<Route path="*" element={<LinkTreePage />} /></Routes></HashRouter></QueryClientProvider>;
+  return <QueryClientProvider client={queryClient}><HashRouter><Routes><Route path="/" element={<LinkTreePage />} /><Route path="/links/:slug" element={<LinkTreePage />} /><Route path="/casas/:slug" element={<GalleryPage />} />{adminEnabled && <Route path="/admin" element={<AdminPage />} />}<Route path="*" element={<LinkTreePage />} /></Routes></HashRouter></QueryClientProvider>;
 }

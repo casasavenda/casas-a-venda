@@ -14,7 +14,7 @@ packages/
 showroom3d/ engine Three.js existente, servido separadamente e incorporado por iframe
 ```
 
-O HTML do mockup foi separado nas rotas `/` (Linktree) e `/casas/:slug` (galeria pública). A galeria mantém lightbox, compartilhamento do link, download das fotos com o nome do cômodo, contato no WhatsApp e o showroom 3D externo com vista de cima. O painel administrativo existe apenas como módulo de desenvolvimento e não é incluído no build público do GitHub Pages.
+O HTML do mockup foi separado nas rotas `/` (Linktree geral), `/links/:slug` (Linktree individual de uma casa) e `/casas/:slug` (galeria pública). A galeria mantém lightbox, compartilhamento do link, download das fotos com o nome do cômodo, contato no WhatsApp e o showroom 3D externo com vista de cima. O painel administrativo existe apenas como módulo de desenvolvimento e não é incluído no build público do GitHub Pages.
 
 ## Rodar localmente
 
@@ -62,7 +62,7 @@ Para informar uma mensagem de commit própria:
 
 O script prepara apenas o catálogo, as fotos e os modelos 3D. A autenticação do GitHub precisa estar configurada no Git. Alterações de código continuam usando o fluxo normal de commit e push. A publicação automática pelo botão fica desabilitada se a API estiver em produção; ela é destinada ao painel local.
 
-Mantenha o mesmo `slug` quando quiser preservar o link do QR code. A URL pública usada pelo painel é `https://casasavenda.github.io/casas-a-venda/#/casas/<slug>`.
+Mantenha o mesmo `slug` quando quiser preservar o link do QR code. A URL pública individual usada pelo painel é `https://casasavenda.github.io/casas-a-venda/#/links/<slug>`; a galeria direta continua disponível em `https://casasavenda.github.io/casas-a-venda/#/casas/<slug>`.
 
 O site publicado no GitHub Pages é estático: ele não publica nem conecta a API administrativa. Em produção, a API deve ser hospedada separadamente e receber `ADMIN_PASSWORD`, `ADMIN_TOKEN` e `WEB_ORIGIN` por variáveis de ambiente, nunca pelo repositório.
 

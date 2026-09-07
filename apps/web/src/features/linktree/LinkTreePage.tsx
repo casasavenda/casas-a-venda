@@ -1,21 +1,28 @@
 import { ArrowRight, Images, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+import type { House } from '@casas/schemas';
 import { BrandMark } from '../../components/BrandMark';
 import { api } from '../../lib/api';
 
 export function LinkTreePage() {
-  const { data: houses, isPending } = useQuery({ queryKey: ['houses'], queryFn: api.listHouses });
-  const publishedHouses = (houses || []).filter((house) => house.status === 'ok');
+  const { slug } = useParams<{ slug?: string }>();
+  const { data: houses = [], isPending, error } = useQuery<House[]>({
+    queryKey: slug ? ['house', slug] : ['houses'],
+    queryFn: async () => slug ? [await api.getHouse(slug)] : api.listHouses(),
+  });
+  const publishedHouses = houses.filter((house) => house.status === 'ok');
 
   if (isPending) return <main className="grid min-h-screen place-items-center bg-surface text-muted-foreground">Carregando perfil...</main>;
+  if (error) return <main className="grid min-h-screen place-items-center bg-surface px-5 text-center text-muted-foreground">Casa não encontrada.</main>;
   if (!publishedHouses.length) return <main className="grid min-h-screen place-items-center bg-surface text-muted-foreground">Nenhuma casa publicada.</main>;
 
   return (
     <main className="grid min-h-screen place-items-start bg-surface px-5 py-14 text-foreground sm:place-items-center sm:py-10">
       <div className="mx-auto flex w-full max-w-sm flex-col items-center gap-5 text-center">
         <BrandMark />
-        <div><p className="eyebrow mb-2 text-primary">CASAS À VENDA</p><h1 className="font-serif text-3xl font-semibold">Encontre seu próximo lar</h1><p className="mt-1.5 text-sm text-muted-foreground">Conheça nossas casas disponíveis</p></div>
+        <div><p className="eyebrow mb-2 text-primary">CASAS À VENDA</p><h1 className="font-serif text-3xl font-semibold">{slug ? 'Conheça esta casa' : 'Encontre seu próximo lar'}</h1><p className="mt-1.5 text-sm text-muted-foreground">{slug ? 'Veja os detalhes e fale com o responsável' : 'Conheça nossas casas disponíveis'}</p></div>
         <div className="flex w-full flex-col gap-3 pt-2">
           {publishedHouses.map((house) => {
             const whatsappMessage = `Olá, Cleber! Tenho interesse na ${house.title}, em ${house.addr}, e gostaria de receber mais informações e agendar uma visita.`;
