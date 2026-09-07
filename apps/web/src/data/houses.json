@@ -100,5 +100,22 @@
     "model3dDescription": "Gire o modelo, aproxime e veja a fachada e a implantação da casa em outra escala.",
     "photos": [],
     "id": "house-1788808594910"
+  },
+  {
+    "title": "a",
+    "addr": "a",
+    "area": "",
+    "rooms": "",
+    "highlight": "",
+    "description": "",
+    "phone": "",
+    "slug": "teste2",
+    "status": "ok",
+    "coverUrl": "",
+    "model3dUrl": "",
+    "model3dTitle": "Explore a casa",
+    "model3dDescription": "Gire o modelo, aproxime e veja a fachada e a implantação da casa em outra escala.",
+    "photos": [],
+    "id": "house-1788809266620"
   }
 ]
