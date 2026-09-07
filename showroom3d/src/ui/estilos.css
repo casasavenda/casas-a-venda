@@ -70,20 +70,6 @@ h1 { max-width: 20ch; margin-top: .35rem; font: 650 clamp(1.8rem, 4vw, 3.25rem)/
 .canvas-actions { position: absolute; top: .85rem; right: .85rem; z-index: 3; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .5rem; }
 .canvas-actions .button { backdrop-filter: blur(12px); }
 .cutaway-button.is-active { border-color: hsl(var(--primary) / .65); background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
-.interior-button.is-active { border-color: hsl(var(--primary) / .65); background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
-.internal-controls { position: absolute; top: .85rem; left: .85rem; z-index: 3; display: grid; gap: .48rem; width: min(19rem, calc(100% - 1.7rem)); padding: .85rem; border: 1px solid hsl(var(--border)); border-radius: .9rem; background: hsl(var(--card) / .9); box-shadow: 0 12px 30px hsl(var(--foreground) / .14); backdrop-filter: blur(16px); }
-.internal-controls[hidden] { display: none; }
-.internal-controls-heading { display: grid; gap: .18rem; }
-.internal-controls-heading strong { color: hsl(var(--foreground)); font-size: .9rem; }
-.internal-controls label { color: hsl(var(--muted-foreground)); font-size: .7rem; }
-.internal-controls select { width: 100%; min-height: 2.35rem; padding: .45rem .6rem; border: 1px solid hsl(var(--border)); border-radius: .55rem; background: hsl(var(--background) / .88); color: hsl(var(--foreground)); font: inherit; font-size: .76rem; }
-.internal-house-toggle { min-height: 2.2rem; justify-content: center; padding-inline: .55rem; font-size: .72rem; }
-.internal-navigation { display: grid; grid-template-columns: 1fr 1fr; gap: .45rem; }
-.internal-navigation .button { min-height: 2.2rem; padding-inline: .55rem; font-size: .72rem; }
-.internal-controls p { color: hsl(var(--muted-foreground)); font-size: .66rem; line-height: 1.35; }
-.canvas-frame.is-interior .viewer-canvas { cursor: crosshair; }
-.canvas-frame.is-interior .canvas-actions .house-selection-button { display: none; }
-.canvas-frame.is-interior .viewer-hint { right: .85rem; max-width: min(22rem, calc(100% - 21rem)); }
 .viewer-hint { position: absolute; right: .85rem; bottom: .85rem; z-index: 3; max-width: calc(100% - 1.7rem); padding: .56rem .72rem; border: 1px solid hsl(var(--border)); border-radius: 999px; background: hsl(var(--card) / .86); color: hsl(var(--muted-foreground)); font-size: .7rem; pointer-events: none; }
 
 .viewer-footer { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 1rem .2rem 0; }
@@ -116,8 +102,6 @@ h1 { max-width: 20ch; margin-top: .35rem; font: 650 clamp(1.8rem, 4vw, 3.25rem)/
   .canvas-frame, .viewer-canvas { min-height: min(68vh, 560px); }
   .canvas-actions { top: .65rem; right: .65rem; gap: .35rem; }
   .canvas-actions .button { min-height: 2.35rem; padding-inline: .65rem; font-size: .7rem; }
-  .internal-controls { top: .65rem; left: .65rem; width: min(17rem, calc(100% - 1.3rem)); padding: .7rem; }
-  .canvas-frame.is-interior .viewer-hint { right: .65rem; bottom: .65rem; max-width: calc(100% - 1.3rem); }
   .viewer-hint { right: .65rem; bottom: .65rem; font-size: .64rem; }
   .viewer-footer { display: block; }
   .measurements { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: .85rem; }

@@ -3,6 +3,18 @@ import { useEffect, useState } from 'react';
 import type { Photo } from '@casas/schemas';
 import { Button } from '../../components/ui/button';
 
+function downloadName(photo: Photo) {
+  const label = photo.label
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '') || 'foto';
+  const source = photo.file || photo.url.split(/[?#]/)[0];
+  const extension = source.split('.').pop()?.toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg';
+  return `${label}.${extension}`;
+}
+
 export function PhotoLightbox({ photos, initialIndex, onClose }: { photos: Photo[]; initialIndex: number; onClose: () => void }) {
   const [index, setIndex] = useState(initialIndex);
   const [playing, setPlaying] = useState(false);
@@ -33,7 +45,7 @@ export function PhotoLightbox({ photos, initialIndex, onClose }: { photos: Photo
         <span className="font-mono text-xs opacity-80">{index + 1} / {photos.length}</span>
         <div className="flex gap-2">
           <button className="icon-button-on-dark" onClick={() => setPlaying((current) => !current)} aria-label={playing ? 'Pausar apresentação' : 'Iniciar apresentação'}>{playing ? <Pause size={16} /> : <Play size={16} />}</button>
-          <a className="icon-button-on-dark" href={photo.url} download aria-label="Baixar foto"><Download size={16} /></a>
+          <a className="icon-button-on-dark" href={photo.url} download={downloadName(photo)} aria-label={`Baixar foto: ${photo.label}`}><Download size={16} /></a>
           <Button variant="outline" onClick={onClose} aria-label="Fechar visualizador"><X size={17} /></Button>
         </div>
       </div>

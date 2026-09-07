@@ -828,9 +828,8 @@ loader.load(
       palcoApresentacao.updateMatrixWorld(true);
       atualizarPainelInterior();
       selecionarPontoInterior(0, false);
-      viewModeButton.textContent = 'Vista externa';
-      viewModeButton.title = 'Voltar à vista externa';
-      viewModeButton.setAttribute('aria-label', 'Voltar à vista externa');
+      viewModeButton?.replaceChildren();
+      viewModeButton?.setAttribute('aria-label', 'Voltar à vista externa');
       cutawayButton.disabled = true;
       if (viewerTitle) viewerTitle.textContent = 'Explore a casa por dentro';
       canvas.setAttribute('aria-label', `Vista interna guiada de ${modoUmaCasa ? 'uma casa' : 'duas casas'}, em primeira pessoa`);
@@ -851,9 +850,8 @@ loader.load(
       camera.updateProjectionMatrix();
       controls.enabled = true;
       cutawayButton.disabled = false;
-      viewModeButton.textContent = 'Vista interna';
-      viewModeButton.title = 'Entrar na vista interna em primeira pessoa';
-      viewModeButton.setAttribute('aria-label', 'Entrar na vista interna em primeira pessoa');
+      viewModeButton?.replaceChildren();
+      viewModeButton?.setAttribute('aria-label', 'Entrar na vista interna em primeira pessoa');
       if (viewerTitle) viewerTitle.textContent = 'Conheça a casa por fora';
       atualizarSelecaoVisual();
     }
@@ -917,11 +915,10 @@ loader.load(
       cutawayButton.classList.toggle('is-active', modoCorteAtivo);
       cutawayButton.title = modoCorteAtivo ? 'Voltar à vista externa com cobertura' : 'Mostrar a vista de cima sem cobertura';
 
-      viewModeButton.textContent = 'Vista interna';
-      viewModeButton.setAttribute('aria-pressed', 'false');
-      viewModeButton.setAttribute('aria-label', 'Entrar na vista interna em primeira pessoa');
-      viewModeButton.title = 'Entrar na vista interna em primeira pessoa';
-      viewModeButton.classList.remove('is-active');
+      viewModeButton?.replaceChildren();
+      viewModeButton?.setAttribute('aria-pressed', 'false');
+      viewModeButton?.setAttribute('aria-label', 'Entrar na vista interna em primeira pessoa');
+      viewModeButton?.classList.remove('is-active');
       atualizarPainelInterior();
 
       const descricaoCasas = modoUmaCasa ? 'uma casa' : 'duas casas';
@@ -973,7 +970,6 @@ loader.load(
     captureButton.disabled = false;
     houseSelectionButton.disabled = false;
     cutawayButton.disabled = false;
-    viewModeButton.disabled = false;
     atualizarSelecaoVisual();
     console.info(`[showroom3d] ${gruposCompactados} grupos de geometria compactados para a apresentação (${modeloArquivo}).`);
   },
@@ -1032,7 +1028,7 @@ captureButton.addEventListener('click', salvarImagem);
 houseSelectionButton.addEventListener('click', () => alternarSelecaoCasa());
 internalHouseButton?.addEventListener('click', () => alternarSelecaoCasa());
 cutawayButton.addEventListener('click', () => alternarModoCorte());
-viewModeButton.addEventListener('click', () => alternarModoInterior());
+viewModeButton?.addEventListener('click', () => alternarModoInterior());
 internalRoomSelect?.addEventListener('change', (evento) => {
   const indice = Number(evento.target.value);
   if (Number.isInteger(indice)) {

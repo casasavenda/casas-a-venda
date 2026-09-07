@@ -14,7 +14,7 @@ packages/
 showroom3d/ engine Three.js existente, servido separadamente e incorporado por iframe
 ```
 
-O HTML do mockup foi separado nas rotas `/` (Linktree) e `/casas/:slug` (galeria pública). A galeria mantém lightbox, navegação por fotos, contato no WhatsApp e o showroom 3D. O painel administrativo existe apenas como módulo de desenvolvimento e não é incluído no build público do GitHub Pages.
+O HTML do mockup foi separado nas rotas `/` (Linktree) e `/casas/:slug` (galeria pública). A galeria mantém lightbox, compartilhamento do link, download das fotos com o nome do cômodo, contato no WhatsApp e o showroom 3D externo com vista de cima. O painel administrativo existe apenas como módulo de desenvolvimento e não é incluído no build público do GitHub Pages.
 
 ## Rodar localmente
 

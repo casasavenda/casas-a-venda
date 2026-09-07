@@ -13,7 +13,7 @@ export function ShowroomEmbed({ title }: { title: string }) {
         <div className="flex flex-col items-start justify-center gap-3">
           <span className="eyebrow text-primary">MODELO 3D</span>
           <h2 id="showroom-title" className="font-serif text-3xl font-semibold">Explore a casa</h2>
-          <p className="text-sm leading-7 text-muted-foreground">Gire o modelo, aproxime e entre nos ambientes para conhecer a proposta em outra escala.</p>
+          <p className="text-sm leading-7 text-muted-foreground">Gire o modelo, aproxime e veja a fachada e a implantação da casa em outra escala.</p>
           {!opened && <Button variant="primary" onClick={() => setOpened(true)}><Box size={16} />Abrir showroom 3D</Button>}
         </div>
         <div className="showroom-slot">

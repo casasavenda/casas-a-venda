@@ -7,7 +7,8 @@ import { api } from '../../lib/api';
 export function LinkTreePage() {
   const { data: houses, isPending } = useQuery({ queryKey: ['houses'], queryFn: api.listHouses });
   const house = houses?.[0];
-  const whatsapp = house?.phone ? `https://wa.me/${house.phone.replace(/\D/g, '')}` : undefined;
+  const whatsappMessage = house ? `Olá, Cleber! Tenho interesse na ${house.title}, em ${house.addr}, e gostaria de receber mais informações e agendar uma visita.` : '';
+  const whatsapp = house?.phone ? `https://wa.me/${house.phone.replace(/\D/g, '')}?text=${encodeURIComponent(whatsappMessage)}` : undefined;
 
   if (isPending) return <main className="grid min-h-screen place-items-center bg-surface text-muted-foreground">Carregando perfil...</main>;
   if (!house) return <main className="grid min-h-screen place-items-center bg-surface text-muted-foreground">Nenhuma casa publicada.</main>;

@@ -23,8 +23,8 @@
     </style>
     <meta name="description" content="Visualização 3D da Casa Feitoria, em Feitoria, São Leopoldo/RS." />
     <title>Casa Feitoria em 3D · Casas à Venda</title>
-    <script type="module" crossorigin src="./assets/index-DSUNSoVz.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-wH2GPmPX.css">
+    <script type="module" crossorigin src="./assets/index-BT_7bUxy.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DRSrOyVt.css">
   </head>
   <body>
     <div class="app-shell">
@@ -48,7 +48,7 @@
             <div>
               <span class="eyebrow">MODELO 3D</span>
               <h1>Conheça a casa por fora</h1>
-            <p class="lead">Gire a casa, aproxime e afaste. Use os controles para alternar entre uma ou duas casas, abrir a vista de cima ou entrar nos ambientes.</p>
+            <p class="lead">Gire a casa, aproxime e afaste. Use os controles para alternar entre uma ou duas casas ou abrir a vista de cima.</p>
             </div>
           </div>
 
@@ -73,23 +73,7 @@
             <div class="canvas-actions">
               <button class="button button-soft house-selection-button" id="house-selection-toggle" type="button" aria-label="Alternar entre duas casas e uma casa" aria-pressed="false" title="Alternar entre duas casas e uma casa" disabled>2 casas</button>
               <button class="button button-soft cutaway-button" id="cutaway-toggle" type="button" aria-label="Mostrar vista de cima sem cobertura" aria-pressed="false" title="Mostrar vista de cima sem cobertura" disabled>Vista de cima</button>
-              <button class="button button-soft interior-button" id="view-mode-toggle" type="button" aria-label="Entrar na vista interna em primeira pessoa" aria-pressed="false" title="Entrar na vista interna em primeira pessoa" disabled>Vista interna</button>
               <button class="button button-soft capture-button" id="capture-button" type="button" disabled>Salvar imagem</button>
-            </div>
-            <div class="internal-controls" id="internal-controls" hidden>
-              <div class="internal-controls-heading">
-                <span class="eyebrow">VISTA INTERNA</span>
-                <strong id="internal-room-title">Selecione um ambiente</strong>
-              </div>
-              <label for="internal-house-toggle">Casas visíveis</label>
-              <button class="button button-soft internal-house-toggle" id="internal-house-toggle" type="button" aria-label="Alternar entre duas casas e uma casa" aria-pressed="false">2 casas</button>
-              <label for="internal-room-select">Ambiente</label>
-              <select id="internal-room-select" disabled></select>
-              <div class="internal-navigation">
-                <button class="button button-soft" id="internal-prev" type="button" disabled>Anterior</button>
-                <button class="button button-soft" id="internal-next" type="button" disabled>Próximo</button>
-              </div>
-              <p id="internal-room-detail">Câmera na altura dos olhos · escala real</p>
             </div>
             <div class="viewer-hint" id="viewer-hint">Arraste para girar · roda ou pinça para aproximar</div>
           </div>
@@ -98,7 +82,7 @@
             <div>
               <span class="eyebrow">ARQUIVO DE ENTREGA</span>
               <strong>casa.glb</strong>
-            <p>Modelo externo e navegação interna guiada prontos para apresentação no navegador.</p>
+            <p>Modelo externo e vista de cima prontos para apresentação no navegador.</p>
             </div>
             <dl class="measurements" id="model-measurements" aria-label="Dimensões aproximadas do modelo">
               <div><dt>Largura</dt><dd>—</dd></div>
@@ -107,7 +91,7 @@
             </dl>
           </div>
 
-          <p class="accessibility-note">Esta visualização apresenta o exterior das casas, uma vista de cima sem a cobertura e uma navegação interna guiada por ambientes. Não há planta editável nem edição do projeto.</p>
+          <p class="accessibility-note">Esta visualização apresenta o exterior das casas e uma vista de cima sem a cobertura. Não há planta editável nem edição do projeto.</p>
         </section>
       </main>
     </div>
