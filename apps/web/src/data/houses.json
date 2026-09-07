@@ -83,5 +83,22 @@
         "label": "Image002"
       }
     ]
+  },
+  {
+    "title": "teste",
+    "addr": "teste",
+    "area": "",
+    "rooms": "",
+    "highlight": "",
+    "description": "",
+    "phone": "",
+    "slug": "casas-teste",
+    "status": "ok",
+    "coverUrl": "",
+    "model3dUrl": "",
+    "model3dTitle": "Explore a casa",
+    "model3dDescription": "Gire o modelo, aproxime e veja a fachada e a implantação da casa em outra escala.",
+    "photos": [],
+    "id": "house-1788808594910"
   }
 ]
