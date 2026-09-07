@@ -31,6 +31,7 @@ const casaFeitoria: House = {
   phone: '5551982472740',
   status: 'ok',
   slug: 'casa-feitoria',
+  coverUrl: '/fotos/10.jpeg',
   photos: fotosFeitoria,
 };
 

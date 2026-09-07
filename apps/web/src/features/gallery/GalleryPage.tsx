@@ -35,7 +35,7 @@ export function GalleryPage() {
         </div>
       </header>
 
-      <section className="gallery-hero" style={{ backgroundImage: `linear-gradient(180deg, rgba(42,35,30,.05), rgba(26,19,14,.86)), url(${house.photos[0]?.url || '/fotos/10.jpeg'})` }}>
+      <section className="gallery-hero" style={{ backgroundImage: `linear-gradient(180deg, rgba(42,35,30,.05), rgba(26,19,14,.86)), url(${house.coverUrl || house.photos[0]?.url || '/fotos/10.jpeg'})` }}>
         <div className="relative z-10 max-w-3xl px-5 pb-10 sm:px-8 sm:pb-12">
           <Badge className="mb-4 border border-white/25 bg-white/15 text-white">Casa disponível</Badge>
           <h1 className="font-serif text-4xl font-semibold tracking-tight sm:text-6xl">{house.title}</h1>

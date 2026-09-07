@@ -14,7 +14,7 @@ packages/
 showroom3d/ engine Three.js existente, servido separadamente e incorporado por iframe
 ```
 
-O HTML do mockup foi separado nas rotas `/` (Linktree), `/casas/:slug` (galeria pública) e `/admin` (painel). A galeria mantém lightbox, navegação por fotos, contato no WhatsApp e o showroom 3D. O painel mantém login, criação, edição, pré-visualização e cópia do link.
+O HTML do mockup foi separado nas rotas `/` (Linktree) e `/casas/:slug` (galeria pública). A galeria mantém lightbox, navegação por fotos, contato no WhatsApp e o showroom 3D. O painel administrativo existe apenas como módulo de desenvolvimento e não é incluído no build público do GitHub Pages.
 
 ## Rodar localmente
 
@@ -32,6 +32,8 @@ Isso inicia:
 - showroom 3D em `http://127.0.0.1:5174`.
 
 Copie `apps/api/.env.example` para `apps/api/.env` e troque `ADMIN_PASSWORD` e `ADMIN_TOKEN` antes de qualquer uso fora do desenvolvimento. A senha padrão existe somente para facilitar o primeiro smoke test local.
+
+O site publicado no GitHub Pages é estático: ele não publica nem conecta a API administrativa. Em produção, a API deve ser hospedada separadamente e receber `ADMIN_PASSWORD`, `ADMIN_TOKEN` e `WEB_ORIGIN` por variáveis de ambiente, nunca pelo repositório.
 
 ## Verificações
 

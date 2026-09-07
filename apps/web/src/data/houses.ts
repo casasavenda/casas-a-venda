@@ -13,6 +13,7 @@ export const staticHouses: House[] = [{
   phone: '5551982472740',
   status: 'ok',
   slug: 'casa-feitoria',
+  coverUrl: asset('10.jpeg'),
   photos: [
     ['03.jpeg', 'Sala de estar'],
     ['06.jpeg', 'Sala de estar'],

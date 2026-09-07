@@ -13,8 +13,14 @@ import {
 } from '@casas/schemas';
 
 const port = Number(process.env.API_PORT || 3333);
-const adminPassword = process.env.ADMIN_PASSWORD || 'dev-only-change-me';
-const adminToken = process.env.ADMIN_TOKEN || 'dev-token-change-me';
+const isProduction = process.env.NODE_ENV === 'production';
+const adminPassword = process.env.ADMIN_PASSWORD || (isProduction ? '' : 'dev-only-change-me');
+const adminToken = process.env.ADMIN_TOKEN || (isProduction ? '' : 'dev-token-change-me');
+const webOrigin = process.env.WEB_ORIGIN || 'http://127.0.0.1:5173';
+
+if (isProduction && (!adminPassword || !adminToken)) {
+  throw new Error('ADMIN_PASSWORD e ADMIN_TOKEN são obrigatórios em produção.');
+}
 
 function sendValidationError(reply: FastifyReply, error: unknown) {
   if (error instanceof Error) {
@@ -34,7 +40,7 @@ export function buildServer() {
   const app = Fastify({ logger: true });
   const db = createDatabase();
 
-  app.register(cors, { origin: true });
+  app.register(cors, { origin: isProduction ? webOrigin : true });
 
   app.get('/health', async () => ({ status: 'ok' }));
 

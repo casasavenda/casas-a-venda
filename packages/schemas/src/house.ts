@@ -20,6 +20,7 @@ export const houseSchema = z.object({
   phone: z.string().trim().default(''),
   slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug inválido'),
   status: houseStatusSchema,
+  coverUrl: z.string().trim().default(''),
   photos: z.array(photoSchema).default([]),
 });
 

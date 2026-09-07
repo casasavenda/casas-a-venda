@@ -12,6 +12,7 @@ import { Button } from '../../components/ui/button';
 import { Card, CardContent } from '../../components/ui/card';
 import { Input } from '../../components/ui/input';
 import { api } from '../../lib/api';
+import { adminApi } from '../../lib/adminApi';
 import { HouseForm } from './HouseForm';
 
 const tokenKey = 'casas-a-venda.admin-token';
@@ -23,7 +24,7 @@ export function AdminPage() {
 
 function Login({ onSuccess }: { onSuccess: (token: string) => void }) {
   const form = useForm<z.infer<typeof loginSchema>>({ resolver: zodResolver(loginSchema) });
-  const mutation = useMutation({ mutationFn: (values: z.infer<typeof loginSchema>) => api.login(values.password), onSuccess: (result) => onSuccess(result.token) });
+  const mutation = useMutation({ mutationFn: (values: z.infer<typeof loginSchema>) => adminApi.login(values.password), onSuccess: (result) => onSuccess(result.token) });
   return <main className="grid min-h-screen place-items-center bg-surface px-5 text-foreground"><Card className="w-full max-w-sm"><CardContent className="p-6"><div className="mb-6 flex items-center gap-3"><BrandMark /><div><p className="eyebrow text-primary">CASAS À VENDA</p><h1 className="font-serif text-2xl font-semibold">Painel administrativo</h1></div></div><form className="space-y-4" onSubmit={form.handleSubmit((values) => mutation.mutate(values))}><label className="block space-y-1.5 text-xs font-semibold">Senha<Input autoFocus type="password" placeholder="Digite a senha" {...form.register('password')} />{form.formState.errors.password && <span className="font-normal text-red-300">{form.formState.errors.password.message}</span>}</label>{mutation.error && <p className="text-sm text-red-300">{mutation.error.message}</p>}<Button className="w-full" variant="primary" type="submit" disabled={mutation.isPending}>{mutation.isPending ? 'Entrando...' : 'Entrar'}</Button></form><p className="mt-4 text-xs leading-5 text-muted-foreground">Em desenvolvimento, a senha vem de <code>ADMIN_PASSWORD</code>. Troque-a antes de publicar.</p></CardContent></Card></main>;
 }
 
@@ -33,8 +34,8 @@ function AdminDashboard({ token, onLogout }: { token: string; onLogout: () => vo
   const [editing, setEditing] = useState<House | 'new' | null>(null);
   const { data: houses = [], isPending, error } = useQuery({ queryKey: ['houses'], queryFn: api.listHouses });
   const save = useMutation({ mutationFn: async (input: z.infer<typeof createHouseSchema> & { id?: string }) => {
-    if (input.id) return api.updateHouse({ ...input, id: input.id }, token);
-    return api.createHouse(input, token);
+    if (input.id) return adminApi.updateHouse({ ...input, id: input.id }, token);
+    return adminApi.createHouse(input, token);
   }, onSuccess: () => { client.invalidateQueries({ queryKey: ['houses'] }); setEditing(null); } });
 
   async function copyLink(house: House) {

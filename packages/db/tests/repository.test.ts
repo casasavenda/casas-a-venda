@@ -23,6 +23,7 @@ describe('repositório de casas', () => {
       phone: '',
       slug: 'casa-teste',
       status: 'draft',
+      coverUrl: '',
       photos: [],
     });
     const updated = await db.update(created.id, { status: 'ok' });

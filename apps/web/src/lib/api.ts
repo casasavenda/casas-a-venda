@@ -1,4 +1,4 @@
-import type { CreateHouse, House, UpdateHouse } from '@casas/schemas';
+import type { House } from '@casas/schemas';
 import { staticHouses } from '../data/houses';
 
 const API_URL = (import.meta.env.VITE_API_URL || 'http://127.0.0.1:3333/api/v1').replace(/\/$/, '');
@@ -27,20 +27,6 @@ export const api = {
       return cloneHouse(house);
     })
     : request<House>(`/houses/${encodeURIComponent(slug)}`),
-  login: (password: string) => isStaticSite ? Promise.reject(new Error('O painel administrativo online ainda não está ativo no site estático.')) : request<{ token: string }>('/auth/login', {
-    method: 'POST',
-    body: JSON.stringify({ password }),
-  }),
-  createHouse: (input: CreateHouse, token: string) => isStaticSite ? Promise.reject(new Error('Cadastros devem ser publicados pelo repositório nesta versão estática.')) : request<House>('/houses', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify(input),
-  }),
-  updateHouse: (input: UpdateHouse, token: string) => isStaticSite ? Promise.reject(new Error('Alterações devem ser publicadas pelo repositório nesta versão estática.')) : request<House>(`/houses/${encodeURIComponent(input.id)}`, {
-    method: 'PATCH',
-    headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify(input),
-  }),
 };
 
 function cloneHouse(house: House): House {
