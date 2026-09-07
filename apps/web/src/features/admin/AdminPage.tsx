@@ -62,10 +62,16 @@ function AdminDashboard({ token, onLogout }: { token: string; onLogout: () => vo
     },
   });
   const publish = useMutation({
-    mutationFn: () => adminApi.publish(token),
-    onSuccess: (result) => setPublishMessage(result.message),
+    mutationFn: (house: House) => adminApi.publish(house.id, token),
+    onMutate: (house) => {
+      setPublishingHouseId(house.id);
+      setPublishMessage('');
+    },
+    onSuccess: (result, house) => setPublishMessage(`${house.title}: ${result.message}`),
+    onSettled: () => setPublishingHouseId(null),
   });
   const [publishMessage, setPublishMessage] = useState('');
+  const [publishingHouseId, setPublishingHouseId] = useState<string | null>(null);
 
   function publicHouseLink(house: Pick<House, 'slug'>) {
     return `${publicSiteUrl}/#/casas/${house.slug}`;
@@ -76,12 +82,12 @@ function AdminDashboard({ token, onLogout }: { token: string; onLogout: () => vo
     await navigator.clipboard?.writeText(link);
   }
 
-  function handlePublish() {
+  function handlePublish(house: House) {
     if (editing) {
-      setPublishMessage('Salve a casa que está sendo editada antes de publicar.');
+      setPublishMessage(`Salve “${house.title}” antes de publicar.`);
       return;
     }
-    publish.mutate();
+    publish.mutate(house);
   }
 
   return (
@@ -89,7 +95,6 @@ function AdminDashboard({ token, onLogout }: { token: string; onLogout: () => vo
       <header className="flex flex-wrap items-center gap-3 border-b border-border bg-background px-5 py-3">
         <BrandMark /><h1 className="font-serif text-xl font-semibold">Painel de casas</h1>
         <div className="ml-auto flex flex-wrap gap-2">
-          <Button variant="primary" onClick={handlePublish} disabled={publish.isPending}><Rocket size={15} />{publish.isPending ? 'Publicando...' : 'Publicar no site'}</Button>
           <Button variant="ghost" onClick={onLogout}><LogOut size={15} />Sair</Button>
         </div>
       </header>
@@ -99,7 +104,7 @@ function AdminDashboard({ token, onLogout }: { token: string; onLogout: () => vo
         {publish.error && <p className="mb-4 whitespace-pre-wrap rounded-md border border-red-900 bg-red-950/30 p-3 text-sm text-red-200">{publish.error.message}</p>}
         {save.error && <p className="mb-4 rounded-md border border-red-900 bg-red-950/30 p-3 text-sm text-red-200">{save.error.message}</p>}
         {error && <p className="mb-4 rounded-md border border-red-900 bg-red-950/30 p-3 text-sm text-red-200">{error.message}</p>}
-        {isPending ? <p className="text-sm text-muted-foreground">Carregando casas...</p> : houses.length ? <div className="space-y-3">{houses.map((house) => <Card key={house.id}><CardContent className="flex flex-wrap items-center gap-4"><div className="grid size-14 shrink-0 place-items-center overflow-hidden rounded-lg bg-primary/10 text-primary">{house.coverUrl ? <img src={house.coverUrl} alt="" className="size-full object-cover" /> : <Settings2 size={23} />}</div><div className="min-w-0 flex-1"><strong className="block truncate">{house.title}</strong><span className="block truncate text-sm text-muted-foreground">{house.addr}</span><span className="mt-1 block font-mono text-xs text-muted-foreground">/casas/{house.slug}</span></div><Badge tone={house.status === 'ok' ? 'success' : 'warning'}>{house.status === 'ok' ? 'Publicada' : 'Rascunho'}</Badge><div className="flex gap-2"><button className="icon-button" aria-label={`Pré-visualizar ${house.title}`} onClick={() => navigate(`/casas/${house.slug}`)}><Eye size={16} /></button><a className="icon-button" href={publicHouseLink(house)} target="_blank" rel="noreferrer" aria-label={`Abrir site público de ${house.title}`}><ExternalLink size={16} /></a><button className="icon-button" aria-label={`Copiar link público de ${house.title}`} onClick={() => copyLink(house)}><Copy size={16} /></button><button className="icon-button" aria-label={`Editar ${house.title}`} onClick={() => setEditing(house)}><Settings2 size={16} /></button></div></CardContent></Card>)}</div> : <Card><CardContent>Nenhuma casa cadastrada.</CardContent></Card>}
+        {isPending ? <p className="text-sm text-muted-foreground">Carregando casas...</p> : houses.length ? <div className="space-y-3">{houses.map((house) => <Card key={house.id}><CardContent className="flex flex-wrap items-center gap-4"><div className="grid size-14 shrink-0 place-items-center overflow-hidden rounded-lg bg-primary/10 text-primary">{house.coverUrl ? <img src={house.coverUrl} alt="" className="size-full object-cover" /> : <Settings2 size={23} />}</div><div className="min-w-0 flex-1"><strong className="block truncate">{house.title}</strong><span className="block truncate text-sm text-muted-foreground">{house.addr}</span><span className="mt-1 block font-mono text-xs text-muted-foreground">/casas/{house.slug}</span></div><Badge tone={house.status === 'ok' ? 'success' : 'warning'}>{house.status === 'ok' ? 'Publicada' : 'Rascunho'}</Badge><Button variant="outline" className="text-xs" onClick={() => handlePublish(house)} disabled={publish.isPending}><Rocket size={14} />{publishingHouseId === house.id ? 'Publicando...' : 'Publicar esta casa'}</Button><div className="flex gap-2"><button className="icon-button" aria-label={`Pré-visualizar ${house.title}`} onClick={() => navigate(`/casas/${house.slug}`)}><Eye size={16} /></button><a className="icon-button" href={publicHouseLink(house)} target="_blank" rel="noreferrer" aria-label={`Abrir site público de ${house.title}`}><ExternalLink size={16} /></a><button className="icon-button" aria-label={`Copiar link público de ${house.title}`} onClick={() => copyLink(house)}><Copy size={16} /></button><button className="icon-button" aria-label={`Editar ${house.title}`} onClick={() => setEditing(house)}><Settings2 size={16} /></button></div></CardContent></Card>)}</div> : <Card><CardContent>Nenhuma casa cadastrada.</CardContent></Card>}
       </div>
       {editing && <HouseForm house={editing === 'new' ? undefined : editing} onClose={() => setEditing(null)} onUpload={async (files) => (await adminApi.uploadPhotos(files, token)).files} onUploadModel={(file) => adminApi.uploadModel(file, token)} onDeleteModel={async (url) => { await adminApi.deleteModel(url, token); }} submitError={save.error?.message} onSubmit={async (input) => { await save.mutateAsync(input); }} />}
     </main>

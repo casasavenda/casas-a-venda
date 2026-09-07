@@ -32,10 +32,10 @@ export const adminApi = {
   login: (password: string) => request<{ token: string }>('/auth/login', { method: 'POST', body: JSON.stringify({ password }) }),
   createHouse: (input: CreateHouse, token: string) => request<House>('/houses', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: JSON.stringify(input) }),
   updateHouse: (input: UpdateHouse, token: string) => request<House>(`/houses/${encodeURIComponent(input.id)}`, { method: 'PATCH', headers: { Authorization: `Bearer ${token}` }, body: JSON.stringify(input) }),
-  publish: (token: string) => request<PublishResult>('/admin/publish', {
+  publish: (houseId: string, token: string) => request<PublishResult>('/admin/publish', {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify({}),
+    body: JSON.stringify({ houseId }),
   }),
   uploadPhotos: async (files: File[], token: string) => request<{ files: UploadedPhoto[] }>('/admin/uploads', {
     method: 'POST',

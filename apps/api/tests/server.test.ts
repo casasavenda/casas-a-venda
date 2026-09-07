@@ -18,7 +18,9 @@ describe('API de casas', () => {
     expect(health.statusCode).toBe(200);
     expect(health.json()).toEqual({ status: 'ok' });
     expect(houses.statusCode).toBe(200);
-    expect(houses.json()).toHaveLength(1);
+    expect(houses.json()).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: 'casa-feitoria', slug: 'casa-feitoria' }),
+    ]));
   });
 
   it('protege mutações e aceita login de desenvolvimento', async () => {

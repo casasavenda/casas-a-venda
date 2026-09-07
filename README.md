@@ -46,7 +46,7 @@ npm run dev
 
 Entre com a senha definida em `apps/api/.env`, crie ou edite a casa e clique em **Salvar casa**. O salvamento atualiza o catálogo local em `apps/web/src/data/houses.json`; uploads de fotos e modelos ficam em `apps/web/public/fotos` e `apps/web/public/showroom3d/modelos`.
 
-Depois de salvar, clique em **Publicar no site** no cabeçalho do painel. Como o painel funciona localmente, a API executa o script fixo de publicação no seu computador: adiciona somente catálogo, fotos e modelos 3D, cria o commit e faz o `push` para a branch atual. O GitHub Actions então reconstrói o GitHub Pages.
+Depois de salvar, clique em **Publicar esta casa** no card da casa desejada. Como o painel funciona localmente, a API executa o script fixo de publicação no seu computador: adiciona somente catálogo, fotos e modelos 3D, cria um commit identificado pela casa selecionada e faz o `push` para a branch atual. O GitHub Actions então reconstrói o GitHub Pages inteiro, porque o Pages sempre publica o projeto completo.
 
 Se preferir publicar pelo PowerShell, abra-o na raiz do projeto e rode:
 

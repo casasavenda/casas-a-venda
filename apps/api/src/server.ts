@@ -52,7 +52,7 @@ async function writeCatalog(houses: House[]) {
   await writeFile(catalogPath, `${JSON.stringify(houses, null, 2)}\n`, 'utf8');
 }
 
-async function publishCatalog() {
+async function publishCatalog(message: string) {
   const powershell = process.platform === 'win32' ? 'powershell.exe' : 'pwsh';
   return execFileAsync(powershell, [
     '-NoProfile',
@@ -61,6 +61,8 @@ async function publishCatalog() {
     'Bypass',
     '-File',
     publishScriptPath,
+    '-Message',
+    message,
   ], { cwd: projectRoot, maxBuffer: 512 * 1024 });
 }
 
@@ -207,14 +209,22 @@ export function buildServer() {
     return reply.send(houseSchema.parse(house));
   });
 
-  app.post('/api/v1/admin/publish', { preHandler: requireAdmin }, async (_request, reply) => {
+  app.post<{ Body: { houseId?: unknown } }>('/api/v1/admin/publish', { preHandler: requireAdmin }, async (request, reply) => {
     if (isProduction) {
       return reply.code(403).send({ error: 'forbidden', message: 'A publicação automática só está disponível no computador local.' });
     }
 
+    if (typeof request.body?.houseId !== 'string' || !request.body.houseId) {
+      return reply.code(400).send({ error: 'validation_error', message: 'Selecione uma casa para publicar.' });
+    }
+    const house = await db.findById(request.body.houseId);
+    if (!house) {
+      return reply.code(404).send({ error: 'not_found', message: 'A casa selecionada não foi encontrada.' });
+    }
+
     try {
-      const result = await publishCatalog();
-      return reply.send({ published: true, message: result.stdout.trim() || 'Catálogo publicado com sucesso.' });
+      const result = await publishCatalog(`publica ${house.title} (${house.slug})`);
+      return reply.send({ published: true, message: result.stdout.trim() || `Casa “${house.title}” publicada com sucesso.` });
     } catch (error) {
       const commandError = error as Error & { stdout?: string; stderr?: string };
       const details = [commandError.stderr, commandError.stdout, commandError.message]

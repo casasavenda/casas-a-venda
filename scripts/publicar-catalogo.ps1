@@ -3,6 +3,8 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+$OutputEncoding = [Console]::OutputEncoding
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 $paths = @(
   "apps/web/src/data/houses.json",
@@ -14,37 +16,37 @@ Push-Location $repoRoot
 try {
   $changes = git status --porcelain -- $paths
   if ($LASTEXITCODE -ne 0) {
-    throw "Não foi possível consultar o estado do Git."
+    throw "Nao foi possivel consultar o estado do Git."
   }
 
   if (-not ($changes | Out-String).Trim()) {
-    Write-Host "Nenhuma alteração de catálogo, fotos ou modelos 3D para publicar."
+    Write-Host "Nenhuma alteracao de catalogo, fotos ou modelos 3D para publicar."
     return
   }
 
   git add -- $paths
   if ($LASTEXITCODE -ne 0) {
-    throw "Não foi possível preparar os arquivos do catálogo."
+    throw "Nao foi possivel preparar os arquivos do catalogo."
   }
 
   git diff --cached --check -- $paths
   if ($LASTEXITCODE -ne 0) {
-    throw "Foram encontrados problemas de formatação nos arquivos preparados."
+    throw "Foram encontrados problemas de formatacao nos arquivos preparados."
   }
 
   $branch = (git branch --show-current).Trim()
   if (-not $branch) {
-    throw "Não foi possível descobrir a branch atual."
+    throw "Nao foi possivel descobrir a branch atual."
   }
 
   git commit -m $Message
   if ($LASTEXITCODE -ne 0) {
-    throw "O commit não foi criado."
+    throw "O commit nao foi criado."
   }
 
   git push origin $branch
   if ($LASTEXITCODE -ne 0) {
-    throw "O push não foi concluído. Verifique a autenticação do GitHub."
+    throw "O push nao foi concluido. Verifique a autenticacao do GitHub."
   }
 
   Write-Host "Publicado na branch $branch. Aguarde o GitHub Actions atualizar o Pages."
