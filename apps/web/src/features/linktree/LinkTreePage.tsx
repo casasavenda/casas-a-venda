@@ -9,7 +9,7 @@ import { api } from '../../lib/api';
 export function LinkTreePage() {
   const { slug } = useParams<{ slug?: string }>();
   const { data: houses = [], isPending, error } = useQuery<House[]>({
-    queryKey: slug ? ['house', slug] : ['houses'],
+    queryKey: slug ? ['linktree-house', slug] : ['houses'],
     queryFn: async () => slug ? [await api.getHouse(slug)] : api.listHouses(),
   });
   const publishedHouses = houses.filter((house) => house.status === 'ok');
