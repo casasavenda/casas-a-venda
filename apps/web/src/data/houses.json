@@ -63,6 +63,7 @@
     ]
   },
   {
+    "id": "house-1788803088856",
     "title": "casa",
     "addr": "222",
     "area": "42424242",
@@ -71,7 +72,7 @@
     "description": "",
     "phone": "",
     "slug": "casa-campestre",
-    "status": "draft",
+    "status": "ok",
     "coverUrl": "/fotos/image002-4.png",
     "model3dUrl": "",
     "model3dTitle": "Explore a casa",
@@ -81,7 +82,6 @@
         "url": "/fotos/image002-4.png",
         "label": "Image002"
       }
-    ],
-    "id": "house-1788803088856"
+    ]
   }
 ]
