@@ -16,47 +16,42 @@
     "model3dDescription": "Gire o modelo, aproxime e veja a fachada e a implantação da casa em outra escala.",
     "photos": [
       {
-        "file": "03.jpeg",
+        "url": "/fotos/quiose-6.jpeg",
+        "label": "Quiosque"
+      },
+      {
         "url": "/fotos/03.jpeg",
         "label": "Sala de estar"
       },
       {
-        "file": "06.jpeg",
         "url": "/fotos/06.jpeg",
         "label": "Sala de estar"
       },
       {
-        "file": "05.jpeg",
         "url": "/fotos/05.jpeg",
         "label": "Sala/cozinha"
       },
       {
-        "file": "04.jpeg",
         "url": "/fotos/04.jpeg",
         "label": "Cozinha"
       },
       {
-        "file": "07.jpeg",
         "url": "/fotos/07.jpeg",
         "label": "Quarto 1"
       },
       {
-        "file": "01.jpeg",
         "url": "/fotos/01.jpeg",
         "label": "Quarto 1"
       },
       {
-        "file": "08.jpeg",
         "url": "/fotos/08.jpeg",
         "label": "Quarto 2"
       },
       {
-        "file": "09.jpeg",
         "url": "/fotos/09.jpeg",
         "label": "Quarto 2"
       },
       {
-        "file": "02.jpeg",
         "url": "/fotos/02.jpeg",
         "label": "Banheiro"
       }
@@ -85,6 +80,7 @@
     ]
   },
   {
+    "id": "house-1788808594910",
     "title": "teste",
     "addr": "teste",
     "area": "",
@@ -98,10 +94,10 @@
     "model3dUrl": "",
     "model3dTitle": "Explore a casa",
     "model3dDescription": "Gire o modelo, aproxime e veja a fachada e a implantação da casa em outra escala.",
-    "photos": [],
-    "id": "house-1788808594910"
+    "photos": []
   },
   {
+    "id": "house-1788809266620",
     "title": "a",
     "addr": "a",
     "area": "",
@@ -115,7 +111,6 @@
     "model3dUrl": "",
     "model3dTitle": "Explore a casa",
     "model3dDescription": "Gire o modelo, aproxime e veja a fachada e a implantação da casa em outra escala.",
-    "photos": [],
-    "id": "house-1788809266620"
+    "photos": []
   }
 ]
