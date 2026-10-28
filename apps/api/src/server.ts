@@ -157,7 +157,7 @@ export function buildServer() {
   const app = Fastify({ logger: true, bodyLimit: 120 * 1024 * 1024 });
   const db = createDatabase(readSeedCatalog());
 
-  app.register(cors, { origin: isProduction ? webOrigin : true });
+  app.register(cors, { origin: isProduction ? webOrigin : true, methods: ['GET', 'POST', 'PATCH', 'DELETE'] });
 
   app.get('/health', async () => ({ status: 'ok' }));
 
