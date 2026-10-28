@@ -71,7 +71,7 @@ export function GalleryPage() {
           <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm text-white/90">
             <span className="inline-flex items-center gap-1.5"><MapPin size={15} />{house.addr}</span><span>{house.rooms}</span><span>{house.area}</span><span>{house.highlight}</span>
           </div>
-          <a className="mt-6 inline-flex min-h-10 items-center gap-2 rounded-md bg-primary px-5 text-sm font-semibold text-primary-foreground hover:bg-primary/90" href="#fotos"><Images size={16} />Ver fotos</a>
+          <button type="button" className="mt-6 inline-flex min-h-10 items-center gap-2 rounded-md bg-primary px-5 text-sm font-semibold text-primary-foreground hover:bg-primary/90" onClick={() => document.getElementById('fotos')?.scrollIntoView({ behavior: 'smooth' })}><Images size={16} />Ver fotos</button>
         </div>
       </section>
 
