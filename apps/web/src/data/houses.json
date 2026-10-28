@@ -16,6 +16,10 @@
     "model3dDescription": "Gire o modelo, aproxime e veja a fachada e a implantação da casa em outra escala.",
     "photos": [
       {
+        "url": "/fotos/frente-casa.jpeg",
+        "label": "Frente Casa"
+      },
+      {
         "url": "/fotos/quiose-6.jpeg",
         "label": "Quiosque"
       },
