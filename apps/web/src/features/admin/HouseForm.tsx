@@ -115,6 +115,15 @@ export function HouseForm({ house, onClose, onSubmit, onUpload, onUploadModel, o
     }
   }
 
+  function reorderPhotos(fromIndex: number, toIndex: number) {
+    if (fromIndex === toIndex) return;
+    const next = previewPhotos.map((photo) => ({ ...photo }));
+    const [moved] = next.splice(fromIndex, 1);
+    if (!moved) return;
+    next.splice(toIndex, 0, moved);
+    updatePhotos(next);
+  }
+
   function updateInfo(field: EditableGalleryField, value: string) {
     form.setValue(field, value, { shouldDirty: true, shouldValidate: field === 'title' || field === 'addr' });
   }
@@ -181,7 +190,7 @@ export function HouseForm({ house, onClose, onSubmit, onUpload, onUploadModel, o
               <input type="hidden" {...form.register('model3dDescription')} />
               <input type="hidden" {...form.register('photosText')} />
             </div>}
-            <div className={`admin-editor-preview ${showSettings ? 'p-5' : 'p-0'}`}><GalleryTemplatePreview immersive={!showSettings} title={values.title} addr={values.addr} area={values.area} rooms={values.rooms} highlight={values.highlight} description={values.description} coverUrl={values.coverUrl} model3dUrl={values.model3dUrl} model3dTitle={values.model3dTitle} model3dDescription={values.model3dDescription} photos={previewPhotos} onInfoChange={updateInfo} onCoverChange={(url) => form.setValue('coverUrl', url, { shouldDirty: true })} onLabelChange={updatePhotoLabel} onRemove={removePhoto} onUpload={onUpload} onUploaded={appendUploaded} onModelInfoChange={updateModelInfo} onModelUpload={onUploadModel} onModelRemove={deleteModel} onModelChange={updateModel} /></div>
+            <div className={`admin-editor-preview ${showSettings ? 'p-5' : 'p-0'}`}><GalleryTemplatePreview immersive={!showSettings} title={values.title} addr={values.addr} area={values.area} rooms={values.rooms} highlight={values.highlight} description={values.description} coverUrl={values.coverUrl} model3dUrl={values.model3dUrl} model3dTitle={values.model3dTitle} model3dDescription={values.model3dDescription} photos={previewPhotos} onInfoChange={updateInfo} onCoverChange={(url) => form.setValue('coverUrl', url, { shouldDirty: true })} onLabelChange={updatePhotoLabel} onRemove={removePhoto} onReorder={reorderPhotos} onUpload={onUpload} onUploaded={appendUploaded} onModelInfoChange={updateModelInfo} onModelUpload={onUploadModel} onModelRemove={deleteModel} onModelChange={updateModel} /></div>
           </div>
           <div className="flex gap-2 border-t border-border bg-background p-4"><Button type="button" className="flex-1" onClick={onClose}>Cancelar</Button><Button type="submit" variant="primary" className="flex-1"><Save size={16} />Salvar casa</Button></div>
         </form>

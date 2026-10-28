@@ -1,5 +1,5 @@
-import { Box, ImagePlus, Pencil, Star, Trash2, Upload } from 'lucide-react';
-import type { ChangeEvent, KeyboardEvent } from 'react';
+import { Box, GripVertical, ImagePlus, Pencil, Star, Trash2, Upload } from 'lucide-react';
+import type { ChangeEvent, DragEvent as ReactDragEvent, KeyboardEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import type { UploadedModel, UploadedPhoto } from '../../lib/adminApi';
 import { BrandMark } from '../../components/BrandMark';
@@ -28,6 +28,7 @@ type GalleryTemplatePreviewProps = {
   onCoverChange: (url: string) => void;
   onLabelChange: (index: number, label: string) => void;
   onRemove: (index: number) => void;
+  onReorder: (fromIndex: number, toIndex: number) => void;
   onUpload: (files: File[]) => Promise<UploadedPhoto[]>;
   onUploaded: (photos: UploadedPhoto[]) => void;
   onModelInfoChange: (field: 'model3dTitle' | 'model3dDescription', value: string) => void;
@@ -53,6 +54,7 @@ export function GalleryTemplatePreview({
   onCoverChange,
   onLabelChange,
   onRemove,
+  onReorder,
   onUpload,
   onUploaded,
   onModelInfoChange,
@@ -65,9 +67,38 @@ export function GalleryTemplatePreview({
   const [modelBusy, setModelBusy] = useState(false);
   const [modelError, setModelError] = useState('');
   const [uploadMode, setUploadMode] = useState<'gallery' | 'cover'>('gallery');
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [overIndex, setOverIndex] = useState<number | null>(null);
+  const dragIndexRef = useRef<number | null>(null);
   const uploadInput = useRef<HTMLInputElement>(null);
   const modelInput = useRef<HTMLInputElement>(null);
   const cover = coverUrl || photos[0]?.url;
+
+  function handlePhotoDragStart(index: number) {
+    dragIndexRef.current = index;
+    setDragIndex(index);
+  }
+
+  function handlePhotoDragOver(event: ReactDragEvent<HTMLElement>, index: number) {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+    if (dragIndexRef.current !== null && index !== overIndex) setOverIndex(index);
+  }
+
+  function handlePhotoDrop(event: ReactDragEvent<HTMLElement>, index: number) {
+    event.preventDefault();
+    const fromIndex = dragIndexRef.current;
+    if (fromIndex !== null && fromIndex !== index) onReorder(fromIndex, index);
+    dragIndexRef.current = null;
+    setDragIndex(null);
+    setOverIndex(null);
+  }
+
+  function handlePhotoDragEnd() {
+    dragIndexRef.current = null;
+    setDragIndex(null);
+    setOverIndex(null);
+  }
 
   function openUpload(mode: 'gallery' | 'cover') {
     setUploadMode(mode);
@@ -148,7 +179,7 @@ export function GalleryTemplatePreview({
           <input ref={uploadInput} className="sr-only" type="file" multiple accept="image/jpeg,image/png,image/webp" onChange={handleUpload} disabled={uploading} />
           {uploading && <p className="text-xs text-primary">{<Upload size={13} className="mr-1 inline" />}Enviando imagens...</p>}
           {uploadError && <p className="text-xs text-red-300">{uploadError}</p>}
-          {photos.length ? <div className="admin-preview-photo-grid">{photos.map((photo, index) => <article className={`admin-preview-photo ${cover === photo.url ? 'selected' : ''}`} key={`${photo.url}-${index}`}><button type="button" className="admin-preview-photo-image" onClick={() => onCoverChange(photo.url)} aria-label={`Usar ${photo.label || 'foto'} como capa`}>{photo.url ? <img src={photo.url} alt={photo.label} /> : <ImagePlus size={22} />}{cover === photo.url && <span className="admin-cover-badge"><Star size={12} />Capa</span>}</button><div className="flex items-center gap-1.5 p-2"><Input value={photo.label} onChange={(event) => onLabelChange(index, event.target.value)} aria-label={`Nome do cômodo da foto ${index + 1}`} placeholder="Nome do cômodo" /><button type="button" className="icon-button shrink-0" onClick={() => onRemove(index)} aria-label={`Remover foto ${photo.label}`}><Trash2 size={14} /></button></div></article>)}</div> : <button type="button" className="admin-upload-empty" onClick={() => openUpload('gallery')}><ImagePlus size={24} /><span>Clique aqui para anexar as fotos da casa</span><small>JPG, PNG ou WebP · até 10 MB por imagem</small></button>}
+          {photos.length ? <div className="admin-preview-photo-grid">{photos.map((photo, index) => <article className={`admin-preview-photo ${cover === photo.url ? 'selected' : ''} ${dragIndex === index ? 'dragging' : ''} ${overIndex === index && dragIndex !== null && dragIndex !== index ? 'drag-over' : ''}`} key={`${photo.url}-${index}`} draggable onDragStart={() => handlePhotoDragStart(index)} onDragOver={(event) => handlePhotoDragOver(event, index)} onDrop={(event) => handlePhotoDrop(event, index)} onDragEnd={handlePhotoDragEnd}><button type="button" className="admin-preview-photo-image" onClick={() => onCoverChange(photo.url)} aria-label={`Usar ${photo.label || 'foto'} como capa`}>{photo.url ? <img src={photo.url} alt={photo.label} /> : <ImagePlus size={22} />}{cover === photo.url && <span className="admin-cover-badge"><Star size={12} />Capa</span>}</button><div className="flex items-center gap-1.5 p-2"><span className="admin-drag-handle" aria-hidden="true"><GripVertical size={14} /></span><Input value={photo.label} onChange={(event) => onLabelChange(index, event.target.value)} aria-label={`Nome do cômodo da foto ${index + 1}`} placeholder="Nome do cômodo" /><button type="button" className="icon-button shrink-0" onClick={() => onRemove(index)} aria-label={`Remover foto ${photo.label}`}><Trash2 size={14} /></button></div></article>)}</div> : <button type="button" className="admin-upload-empty" onClick={() => openUpload('gallery')}><ImagePlus size={24} /><span>Clique aqui para anexar as fotos da casa</span><small>JPG, PNG ou WebP · até 10 MB por imagem</small></button>}
         </section>
       </div>
     </section>
